@@ -1,679 +1,1064 @@
-// Gaming Portfolio JavaScript - Unified Main Script
+/* LUVO MAPHELA — PORTFOLIO JAVASCRIPT */
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('%c🎮 GameDesigner Portfolio', 'color: #4ade80; font-size: 24px; font-weight: bold;');
-    console.log('%cWelcome to my portfolio! Feel free to explore the code.', 'color: #8b5cf6; font-size: 14px;');
+(() => {
+  "use strict";
 
-    // Initialize all functionality
+  const $ = (selector, root = document) =>
+    root.querySelector(selector);
+
+  const $$ = (selector, root = document) =>
+    [...root.querySelectorAll(selector)];
+
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
+  /*
+   * Add your real project URLs below.
+   * Leave unavailable links empty.
+   */
+  const projectLinks = {
+    "cyber-runner": {
+      demo: "",
+      code: ""
+    },
+    "fantasy-ui": {
+      demo: "",
+      assets: ""
+    },
+    "space-combat": {
+      demo: "",
+      code: ""
+    },
+    featured: {
+      demo: "",
+      code: ""
+    }
+  };
+
+  /* Your existing showcase projects. */
+  const showcaseItems = [
+    {
+      id: 1,
+      title: "Neon City Chase",
+      category: "Games",
+      type: "Game Demo",
+      background: "linear-gradient(135deg, #143a40, #34315d)",
+      description:
+        "High-speed racing game through a cyberpunk cityscape with dynamic lighting and particle effects.",
+      tech: ["Unity", "C#", "Shader Graph"],
+      demo: "",
+      code: ""
+    },
+    {
+      id: 2,
+      title: "Dragon Flight Animation",
+      category: "Animations",
+      type: "3D Animation",
+      background: "linear-gradient(135deg, #562632, #6a4323)",
+      description:
+        "Cinematic dragon flight sequence with particle systems and fire effects.",
+      tech: ["Blender", "Maya", "Houdini"],
+      demo: "",
+      code: ""
+    },
+    {
+      id: 3,
+      title: "Game Launch Trailer",
+      category: "Videos",
+      type: "Video Edit",
+      background: "linear-gradient(135deg, #214454, #16493e)",
+      description:
+        "A trailer showcasing game features through editing and sound design.",
+      tech: ["Premiere Pro", "After Effects", "DaVinci"],
+      demo: "",
+      code: ""
+    },
+    {
+      id: 4,
+      title: "RPG Interface Design",
+      category: "UI/UX",
+      type: "UI Design",
+      background: "linear-gradient(135deg, #37294e, #603247)",
+      description:
+        "An interface suite for a fantasy RPG with animated elements and intuitive navigation.",
+      tech: ["Figma", "Unity UI", "CSS"],
+      demo: "",
+      code: ""
+    },
+    {
+      id: 5,
+      title: "Space Combat Demo",
+      category: "Games",
+      type: "Gameplay",
+      background: "linear-gradient(135deg, #24264f, #1b4462)",
+      description:
+        "Space combat with procedural asteroid fields and AI-driven enemies.",
+      tech: ["Unreal Engine", "C++", "Blueprint"],
+      demo: "",
+      code: ""
+    },
+    {
+      id: 6,
+      title: "Character Showcase",
+      category: "Animations",
+      type: "Animation Reel",
+      background: "linear-gradient(135deg, #16493e, #214454)",
+      description:
+        "A character animation reel featuring rigging and motion capture.",
+      tech: ["Maya", "MotionBuilder", "Zbrush"],
+      demo: "",
+      code: ""
+    }
+  ];
+
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function safeURL(value) {
+    if (!value || !value.trim()) return null;
+
+    try {
+      const url = new URL(value, document.baseURI);
+      return ["https:", "http:"].includes(url.protocol)
+        ? url.href
+        : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function openProjectLink(value, label) {
+    const url = safeURL(value);
+
+    if (!url) {
+      notify(`${label} is not linked yet.`, "Project link");
+      return;
+    }
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  let toastTimer;
+  let toastHideTimer;
+
+  function notify(message, title = "Portfolio") {
+    const toast = $("#toast");
+    if (!toast) return;
+
+    clearTimeout(toastTimer);
+    clearTimeout(toastHideTimer);
+
+    const heading = $(".toast-title", toast);
+    const description = $(".toast-description", toast);
+
+    if (heading) heading.textContent = title;
+    if (description) description.textContent = message;
+
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    toast.classList.remove("hidden");
+    toast.classList.add("show");
+
+    toastTimer = setTimeout(() => {
+      toast.classList.remove("show");
+
+      toastHideTimer = setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 250);
+    }, 6500);
+  }
+
+  /* 1. INTRO */
+
+  function initIntro() {
+    const intro = $("#intro");
+    if (!intro) return;
+
+    const skip = $("#skipIntro");
+    const storageKey = "luvo-portfolio-intro";
+    let seen = false;
+    let timer;
+
+    try {
+      seen = sessionStorage.getItem(storageKey) === "seen";
+    } catch {
+      // The page still works when browser storage is unavailable.
+    }
+
+    function closeIntro() {
+      clearTimeout(timer);
+
+      const hadFocus = intro.contains(document.activeElement);
+      intro.classList.add("intro-hide");
+      intro.hidden = true;
+
+      try {
+        sessionStorage.setItem(storageKey, "seen");
+      } catch {
+        // Storage is optional.
+      }
+
+      if (hadFocus) $(".nav-logo")?.focus();
+    }
+
+    skip?.addEventListener("click", closeIntro);
+
+    if (seen || reducedMotion.matches) {
+      closeIntro();
+    } else {
+      timer = setTimeout(closeIntro, 1800);
+    }
+  }
+
+  /* 2. MOBILE MENU & ACTIVE NAVIGATION */
+
+  function initNavigation() {
+    let toggle = $(".mobile-menu-btn");
+    const menu = $(".mobile-menu");
+    const mobile = window.matchMedia("(max-width: 800px)");
+
+    /*
+     * The supplied HTML uses a div for the menu control.
+     * Replace it with a real keyboard-accessible button.
+     */
+    if (toggle && toggle.tagName !== "BUTTON") {
+      const button = element("button", toggle.className);
+      button.type = "button";
+      button.append(...toggle.childNodes);
+      toggle.replaceWith(button);
+      toggle = button;
+    }
+
+    function setMenu(open, returnFocus = false) {
+      if (!toggle || !menu) return;
+
+      const isOpen = open && mobile.matches;
+      toggle.classList.toggle("active", isOpen);
+      toggle.setAttribute("aria-expanded", String(isOpen));
+      toggle.setAttribute(
+        "aria-label",
+        isOpen ? "Close navigation" : "Open navigation"
+      );
+
+      menu.classList.toggle("active", isOpen);
+      menu.hidden = !isOpen;
+
+      if (returnFocus && mobile.matches) toggle.focus();
+    }
+
+    if (toggle && menu) {
+      menu.id ||= "mobileNavigation";
+      toggle.setAttribute("aria-controls", menu.id);
+      setMenu(false);
+
+      toggle.addEventListener("click", () => {
+        setMenu(toggle.getAttribute("aria-expanded") !== "true");
+      });
+
+      menu.addEventListener("click", event => {
+        const link = event.target.closest("a");
+        if (!link) return;
+
+        setMenu(false);
+
+        const id = link.getAttribute("href")?.slice(1);
+        const section = id ? document.getElementById(id) : null;
+
+        if (section) {
+          section.setAttribute("tabindex", "-1");
+          section.focus({ preventScroll: true });
+        }
+      });
+
+      document.addEventListener("click", event => {
+        if (
+          !menu.hidden &&
+          !menu.contains(event.target) &&
+          !toggle.contains(event.target)
+        ) {
+          setMenu(false, menu.contains(document.activeElement));
+        }
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !menu.hidden) {
+          setMenu(false, true);
+        }
+      });
+
+      mobile.addEventListener("change", () => {
+        const focusInMenu =
+          menu.contains(document.activeElement) ||
+          document.activeElement === toggle;
+
+        setMenu(false);
+
+        if (focusInMenu) {
+          (mobile.matches ? toggle : $(".nav-logo"))?.focus();
+        }
+      });
+    }
+
+    /*
+     * Allow normal anchor navigation.
+     * Only intercept empty placeholder links.
+     */
+    $$('a[href="#"]').forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        notify(
+          `${link.textContent.trim()} has not been linked yet.`,
+          "Link unavailable"
+        );
+      });
+    });
+
+    const links = $$(".nav-link, .mobile-link");
+    const sections = $$("section[id]").filter(section =>
+      links.some(link => link.hash === `#${section.id}`)
+    );
+
+    let queued = false;
+
+    function updateActiveLink() {
+      queued = false;
+      let active = sections[0];
+
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= 150) {
+          active = section;
+        }
+      }
+
+      if (!active) return;
+
+      links.forEach(link => {
+        const selected = link.hash === `#${active.id}`;
+        link.classList.toggle("active", selected);
+
+        if (selected) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(updateActiveLink);
+      },
+      { passive: true }
+    );
+
+    updateActiveLink();
+  }
+
+  /* 3. ACCESSIBLE PROJECT MODAL */
+
+  function initModal() {
+    const modal = $("#projectModal");
+    const body = $("#modalBody");
+    const closeButton = $("#modalClose");
+
+    if (!modal || !body || !closeButton) {
+      return {
+        open() {
+          notify("The project details panel is unavailable.");
+        }
+      };
+    }
+
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-labelledby", "projectDialogTitle");
+    closeButton.setAttribute("aria-label", "Close project details");
+
+    let previousFocus = null;
+    let backgroundState = [];
+
+    function close() {
+      if (modal.classList.contains("hidden")) return;
+
+      modal.classList.add("hidden");
+      document.body.classList.remove("modal-open");
+      body.replaceChildren();
+
+      backgroundState.forEach(([node, wasInert]) => {
+        node.inert = wasInert;
+      });
+
+      backgroundState = [];
+
+      if (previousFocus?.isConnected) previousFocus.focus();
+    }
+
+    function open(item) {
+      previousFocus = document.activeElement;
+
+      const category = element("p", "project-category", item.category);
+      const title = element("h2", "section-title", item.title);
+      title.id = "projectDialogTitle";
+
+      const description = element(
+        "p",
+        "project-description",
+        item.description
+      );
+
+      const tags = element("div", "tech-stack");
+
+      item.tech.forEach(tech => {
+        tags.append(element("span", "tech-tag", tech));
+      });
+
+      const actions = element("div", "featured-buttons");
+
+      [
+        ["Open project ↗", item.demo],
+        ["View code ↗", item.code],
+        ["View assets ↗", item.assets]
+      ].forEach(([label, value]) => {
+        const url = safeURL(value);
+        if (!url) return;
+
+        const link = element("a", "btn btn-primary", label);
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        actions.append(link);
+      });
+
+      body.replaceChildren(category, title, description, tags);
+
+      if (actions.childElementCount) {
+        body.append(actions);
+      } else {
+        body.append(
+          element(
+            "p",
+            "project-description",
+            "A live demo or project link has not been added yet."
+          )
+        );
+      }
+
+      backgroundState = [...document.body.children]
+        .filter(node => node !== modal && node instanceof HTMLElement)
+        .map(node => [node, node.inert]);
+
+      backgroundState.forEach(([node]) => {
+        node.inert = true;
+      });
+
+      modal.classList.remove("hidden");
+      document.body.classList.add("modal-open");
+      closeButton.focus();
+    }
+
+    closeButton.addEventListener("click", close);
+    $(".modal-overlay", modal)?.addEventListener("click", close);
+
+    document.addEventListener("keydown", event => {
+      if (modal.classList.contains("hidden")) return;
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusable = $$(
+        'a[href], button:not([disabled]), [tabindex="0"]',
+        modal
+      ).filter(node => node.getClientRects().length);
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (!first) return;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    return { open, close };
+  }
+
+  /* 4. SHOWCASE & CATEGORY FILTERS */
+
+  function initShowcase(dialog) {
+    const grid = $("#showcaseGrid");
+    if (!grid) return;
+
+    const fragment = document.createDocumentFragment();
+    const cards = [];
+
+    showcaseItems.forEach(item => {
+      const card = element("article", "showcase-item");
+      card.dataset.category = item.category;
+
+      const thumbnail = element("div", "item-thumbnail");
+      thumbnail.style.background = item.background;
+
+      const overlay = element("div", "play-overlay");
+      const preview = element("button", "play-button", "↗");
+      preview.type = "button";
+      preview.setAttribute("aria-label", `View ${item.title}`);
+      preview.addEventListener("click", () => dialog.open(item));
+
+      overlay.append(preview);
+      thumbnail.append(
+        overlay,
+        element("span", "category-badge", item.type)
+      );
+
+      const content = element("div", "item-content");
+      const tags = element("div", "tech-stack");
+
+      item.tech.forEach(tech => {
+        tags.append(element("span", "tech-tag", tech));
+      });
+
+      const details = element(
+        "button",
+        "view-details",
+        "View project details ↗"
+      );
+
+      details.type = "button";
+      details.addEventListener("click", () => dialog.open(item));
+
+      content.append(
+        element("p", "item-category", item.category),
+        element("h3", "item-title", item.title),
+        element("p", "item-description", item.description),
+        tags,
+        details
+      );
+
+      card.append(thumbnail, content);
+      cards.push(card);
+      fragment.append(card);
+    });
+
+    grid.replaceChildren(fragment);
+
+    const filters = $$(".filter-btn");
+
+    function applyFilter(category) {
+      filters.forEach(button => {
+        const active = button.dataset.category === category;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+
+      cards.forEach(card => {
+        card.hidden =
+          category !== "All" &&
+          card.dataset.category !== category;
+      });
+    }
+
+    filters.forEach(button => {
+      button.type = "button";
+      button.addEventListener("click", () => {
+        applyFilter(button.dataset.category);
+      });
+    });
+
+    applyFilter("All");
+
+    /*
+     * Replace the old hard-coded download/rating counters
+     * with counts derived from the actual showcase entries.
+     */
+    const stats = $$(".stats-grid .stat-item");
+
+    const totals = [
+      [showcaseItems.length, "Showcase projects"],
+      [new Set(showcaseItems.map(item => item.category)).size, "Categories"],
+      [
+        new Set(showcaseItems.flatMap(item => item.tech)).size,
+        "Tools & technologies"
+      ]
+    ];
+
+    stats.forEach((stat, index) => {
+      if (!totals[index]) return;
+      const number = $(".stat-number", stat);
+      const label = $(".stat-label", stat);
+
+      if (number) number.textContent = String(totals[index][0]);
+      if (label) label.textContent = totals[index][1];
+    });
+  }
+
+  /* 5. EXISTING GAME PROJECT BUTTONS */
+
+  function initProjectButtons(dialog) {
+    $$(".project-card[data-project]").forEach(card => {
+      const key = card.dataset.project;
+      const links = projectLinks[key] || {};
+
+      const item = {
+        title: $(".project-title", card)?.textContent.trim() || "Project",
+        category:
+          $(".project-category", card)?.textContent.trim() || "Project",
+        description:
+          $(".project-description", card)?.textContent.trim() || "",
+        tech: $$(".tag", card).map(tag => tag.textContent.trim()),
+        ...links
+      };
+
+      $$(".btn", card).forEach(button => {
+        button.type = "button";
+
+        button.addEventListener("click", () => {
+          const action = button.textContent.trim().toLowerCase();
+
+          if (action.includes("details")) {
+            dialog.open(item);
+          } else if (action.includes("code")) {
+            openProjectLink(links.code, `${item.title} repository`);
+          } else if (action.includes("assets")) {
+            openProjectLink(links.assets, `${item.title} assets`);
+          } else {
+            openProjectLink(links.demo, `${item.title} demo`);
+          }
+        });
+      });
+    });
+
+    $("#featuredPlayBtn")?.addEventListener("click", () => {
+      openProjectLink(projectLinks.featured.demo, "Featured demo");
+    });
+
+    $(".featured-buttons .btn-outline")?.addEventListener("click", () => {
+      openProjectLink(projectLinks.featured.code, "Featured repository");
+    });
+
+    const oldPlay = $(".demo-content .play-button");
+
+    if (oldPlay) {
+      const button = element("button", "play-button");
+      button.type = "button";
+      button.setAttribute("aria-label", "Open featured demo");
+      button.append(...oldPlay.childNodes);
+      oldPlay.replaceWith(button);
+
+      button.addEventListener("click", () => {
+        openProjectLink(projectLinks.featured.demo, "Featured demo");
+      });
+    }
+  }
+
+  /* 6. CONTACT FORM */
+
+  function initContactForm() {
+    const form = $("#contactForm");
+    if (!form) return;
+
+    const labels = {
+      name: "Your name",
+      email: "Your email",
+      subject: "Subject",
+      message: "Your message"
+    };
+
+    const fields = $$("input, textarea", form);
+
+    fields.forEach(field => {
+      field.setAttribute(
+        "aria-label",
+        labels[field.name] || field.placeholder || field.name
+      );
+
+      if (field.name === "name") field.autocomplete = "name";
+      if (field.name === "email") field.autocomplete = "email";
+
+      field.addEventListener("focus", () => {
+        field.parentElement.classList.add("focused");
+      });
+
+      field.addEventListener("blur", () => {
+        field.parentElement.classList.remove("focused");
+      });
+
+      field.addEventListener("input", () => {
+        field.setCustomValidity("");
+        field.classList.remove("error");
+        field.removeAttribute("aria-invalid");
+      });
+    });
+
+    const submit = $(".submit-btn", form);
+
+    if (submit) {
+      submit.replaceChildren(document.createTextNode("Create email draft ↗"));
+    }
+
+    const note = element(
+      "p",
+      "contact-desc",
+      "Opens your email app with a draft. Review it and press Send there."
+    );
+
+    form.append(note);
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+
+      fields.forEach(field => {
+        const blank = field.required && !field.value.trim();
+        field.setCustomValidity(blank ? "Please complete this field." : "");
+        field.classList.toggle("error", !field.validity.valid);
+        field.setAttribute("aria-invalid", String(!field.validity.valid));
+      });
+
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const name = String(data.get("name") || "").trim();
+      const email = String(data.get("email") || "").trim();
+      const subject = String(data.get("subject") || "").trim();
+      const message = String(data.get("message") || "").trim();
+
+      const body = `${message}\n\nFrom: ${name}\nEmail: ${email}`;
+
+      const mailto =
+        "mailto:luvomaphela0@gmail.com" +
+        `?subject=${encodeURIComponent(subject)}` +
+        `&body=${encodeURIComponent(body)}`;
+
+      notify(
+        "An email draft was requested. Send it from your email app. If nothing opens, email luvomaphela0@gmail.com directly.",
+        "Email draft"
+      );
+
+      window.location.href = mailto;
+    });
+
+    $$(".contact-value").forEach(value => {
+      const text = value.textContent.trim();
+      let href = "";
+
+      if (text === "luvomaphela0@gmail.com") {
+        href = `mailto:${text}`;
+      } else if (text.startsWith("+27")) {
+        href = `tel:${text.replace(/[^\d+]/g, "")}`;
+      }
+
+      if (!href) return;
+
+      const link = element("a", "", text);
+      link.href = href;
+      value.replaceChildren(link);
+    });
+  }
+
+  /* 7. OMINEX — LOCAL COMMAND DEMO */
+
+  function initOminex() {
+    const input = $("#ominexInput");
+    const send = $("#ominexSend");
+    const screen = $("#ominexScreen");
+
+    if (!input || !send || !screen) return;
+
+    input.setAttribute("aria-label", "OMINEX command");
+    input.maxLength = 500;
+    send.type = "button";
+
+    screen.setAttribute("role", "log");
+    screen.setAttribute("aria-live", "polite");
+    screen.setAttribute("aria-relevant", "additions");
+
+    const heading = $(".ominex-header h3");
+    if (heading) heading.textContent = "OMINEX — Interactive Portfolio Guide";
+
+    function addMessage(text, type = "ai") {
+      screen.append(element("div", `msg ${type}`, text));
+
+      while (screen.childElementCount > 40) {
+        screen.firstElementChild.remove();
+      }
+
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    screen.replaceChildren();
+
+    addMessage(
+      'Welcome to OMINEX, a local command demo. Try "run it", "projects", "websites", "videos", "contact" or "help".'
+    );
+
+    function run() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = "";
+      const command = text.toLowerCase().replace(/[.!?]+$/, "");
+
+      if (command === "clear") {
+        screen.replaceChildren();
+        addMessage('Screen cleared. Type "help" for commands.');
+        return;
+      }
+
+      addMessage(text, "user");
+
+      const responses = {
+        "run it":
+          "OMINEX activated. Explore Luvo’s games, websites, animation and video work.",
+        help:
+          "Commands: run it, projects, websites, videos, skills, contact, clear.",
+        projects:
+          "The Featured Projects section includes Cyber Runner, Fantasy RPG Interface and Space Combat VR.",
+        websites:
+          "Explore Cinryvan for entertainment discovery and Lexryspell for word discovery. Both links are in My Websites.",
+        videos:
+          "Visit the Movie thinkers section to watch the three linked YouTube videos.",
+        skills:
+          "Luvo works across game development, web development, graphic and UI design, video editing and 3D animation.",
+        contact:
+          "Email luvomaphela0@gmail.com or use the contact form to create an email draft.",
+        hello:
+          'Hello! Type "help" to see the available commands.',
+        hi:
+          'Hi! Type "help" to explore the portfolio.'
+      };
+
+      addMessage(
+        responses[command] ||
+        'This is a local command demo, so I only recognise the listed commands. Type "help" to see them.'
+      );
+    }
+
+    send.addEventListener("click", run);
+
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault();
+        run();
+      }
+    });
+  }
+
+  /* 8. SCROLL REVEALS */
+
+  function initReveals() {
+    if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add("animate-in");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    $$(
+      ".skill-card, .project-card, .showcase-item, " +
+      ".website-card, .youtube-card, .achievement"
+    ).forEach(node => observer.observe(node));
+  }
+
+  /* 9. LIGHTWEIGHT ENERGY BACKGROUND */
+
+  function initEnergy() {
+    const canvas = $("#energy-canvas");
+    if (!canvas) return;
+
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    let width = 0;
+    let height = 0;
+    let particles = [];
+    let frame = 0;
+    let previousTime = 0;
+    let visible = true;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+      const count = window.innerWidth < 600 ? 22 : 48;
+
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 12,
+        vy: (Math.random() - 0.5) * 10,
+        size: Math.random() * 1.5 + 0.6
+      }));
+    }
+
+    function draw(time) {
+      frame = 0;
+
+      if (document.hidden || reducedMotion.matches || !visible) return;
+
+      const delta = previousTime
+        ? Math.min((time - previousTime) / 1000, 0.05)
+        : 0;
+
+      previousTime = time;
+      context.clearRect(0, 0, width, height);
+
+      particles.forEach(particle => {
+        particle.x += particle.vx * delta;
+        particle.y += particle.vy * delta;
+
+        if (particle.x < 0) particle.x = width;
+        if (particle.x > width) particle.x = 0;
+        if (particle.y < 0) particle.y = height;
+        if (particle.y > height) particle.y = 0;
+
+        context.beginPath();
+        context.fillStyle = "#c5f86b";
+        context.arc(
+          particle.x,
+          particle.y,
+          particle.size,
+          0,
+          Math.PI * 2
+        );
+        context.fill();
+      });
+
+      frame = requestAnimationFrame(draw);
+    }
+
+    function sync() {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      previousTime = 0;
+
+      if (!document.hidden && !reducedMotion.matches && visible) {
+        frame = requestAnimationFrame(draw);
+      } else if (reducedMotion.matches) {
+        context.clearRect(0, 0, width, height);
+      }
+    }
+
+    let resizeTimer;
+
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+
+      resizeTimer = setTimeout(() => {
+        resize();
+        sync();
+      }, 150);
+    });
+
+    document.addEventListener("visibilitychange", sync);
+
+    reducedMotion.addEventListener("change", () => {
+      resize();
+      sync();
+    });
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting;
+        sync();
+      });
+
+      observer.observe(canvas);
+    }
+
+    resize();
+    sync();
+  }
+
+  /* 10. IMAGE FALLBACKS */
+
+  function initImages() {
+    $$("img").forEach(image => {
+      image.decoding = "async";
+
+      function handleError() {
+        if (image.dataset.fallbackHandled) return;
+        image.dataset.fallbackHandled = "true";
+
+        const container = image.parentElement;
+        image.hidden = true;
+
+        const fallback = element(
+          "span",
+          "",
+          image.alt || "Preview unavailable"
+        );
+
+        fallback.style.cssText =
+          "position:absolute;inset:0;display:grid;" +
+          "place-items:center;padding:24px;text-align:center;" +
+          "color:#cbd3df;font-size:13px;pointer-events:none;";
+
+        container?.append(fallback);
+      }
+
+      image.addEventListener("error", handleError, { once: true });
+
+      if (image.complete && image.naturalWidth === 0) {
+        handleError();
+      }
+    });
+  }
+
+  /* START */
+
+  function init() {
+    initIntro();
     initNavigation();
+
+    const dialog = initModal();
+
+    initShowcase(dialog);
+    initProjectButtons(dialog);
     initContactForm();
-    initShowcase();
-    initAnimations();
-    initParticles();
+    initOminex();
+    initImages();
+    initReveals();
+    initEnergy();
 
-    // Navigation functionality
-    function initNavigation() {
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const navLinks = document.querySelectorAll('a[href^="#"]');
-        const sections = document.querySelectorAll('section[id]');
-        const navLinksAll = document.querySelectorAll('.nav-link, .mobile-link');
+    const year = $("#currentYear");
+    if (year) year.textContent = String(new Date().getFullYear());
+  }
 
-        // Mobile menu toggle
-        if (mobileMenuBtn && mobileMenu) {
-            mobileMenuBtn.addEventListener('click', function() {
-                mobileMenu.classList.toggle('active');
-                
-                const spans = mobileMenuBtn.querySelectorAll('span');
-                if (mobileMenu.classList.contains('active')) {
-                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                    spans[1].style.opacity = '0';
-                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                } else {
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                }
-            });
-        }
-
-        // Smooth scrolling
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    if (mobileMenu && mobileMenu.classList.contains('active')) {
-                        mobileMenu.classList.remove('active');
-                        const spans = mobileMenuBtn.querySelectorAll('span');
-                        spans[0].style.transform = 'none';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
-                    }
-                }
-            });
-        });
-
-        // Update active navigation on scroll
-        function updateActiveLink() {
-            const scrollPosition = window.scrollY + 100;
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
-                
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    navLinksAll.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${sectionId}`) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-        }
-
-        let ticking = false;
-        window.addEventListener('scroll', function() {
-            if (!ticking) {
-                requestAnimationFrame(updateActiveLink);
-                ticking = true;
-                setTimeout(() => { ticking = false; }, 100);
-            }
-        });
-    }
-
-    // Contact form functionality
-    function initContactForm() {
-        const contactForm = document.getElementById('contactForm');
-        const toast = document.getElementById('toast');
-        
-        if (!contactForm) return;
-
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(contactForm);
-            const data = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                subject: formData.get('subject'),
-                message: formData.get('message')
-            };
-
-            // Simple validation
-            if (!data.name || !data.email || !data.subject || !data.message) {
-                showNotification('Please fill in all fields.', 'error');
-                return;
-            }
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(data.email)) {
-                showNotification('Please enter a valid email address.', 'error');
-                return;
-            }
-
-            console.log('Form submitted:', data);
-            showToast();
-            contactForm.reset();
-        });
-
-        // Form input animations and validation
-        const inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('focused');
-            });
-
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.classList.remove('focused');
-                }
-            });
-
-            input.addEventListener('input', function() {
-                validateField(this);
-            });
-        });
-
-        function validateField(field) {
-            const value = field.value.trim();
-            let isValid = true;
-
-            field.classList.remove('error');
-
-            switch(field.type) {
-                case 'email':
-                    isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-                    break;
-                case 'text':
-                    isValid = value.length >= 2;
-                    break;
-                default:
-                    isValid = value.length > 0;
-            }
-
-            if (!isValid && value.length > 0) {
-                field.classList.add('error');
-            }
-
-            return isValid;
-        }
-
-        function showToast() {
-            if (!toast) return;
-            
-            toast.classList.remove('hidden');
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.classList.add('hidden');
-                }, 300);
-            }, 5000);
-        }
-    }
-
-    // Showcase functionality
-    function initShowcase() {
-        const showcaseItems = [
-            {
-                id: 1,
-                title: "Neon City Chase",
-                category: "Games",
-                type: "Game Demo",
-                thumbnail: "linear-gradient(135deg, #06b6d4, #8b5cf6)",
-                description: "High-speed racing game through cyberpunk cityscape with dynamic lighting and particle effects",
-                rating: 4.8,
-                downloads: "15K+",
-                tech: ["Unity", "C#", "Shader Graph"]
-            },
-            {
-                id: 2,
-                title: "Dragon Flight Animation",
-                category: "Animations",
-                type: "3D Animation",
-                thumbnail: "linear-gradient(135deg, #ef4444, #f97316)",
-                description: "Cinematic dragon flight sequence with advanced particle systems and realistic fire effects",
-                rating: 4.9,
-                downloads: "8K+",
-                tech: ["Blender", "Maya", "Houdini"]
-            },
-            {
-                id: 3,
-                title: "Game Launch Trailer",
-                category: "Videos",
-                type: "Video Edit",
-                thumbnail: "linear-gradient(135deg, #3b82f6, #10b981)",
-                description: "Epic trailer showcasing game features with professional editing and sound design",
-                rating: 4.7,
-                downloads: "25K+",
-                tech: ["Premiere Pro", "After Effects", "DaVinci"]
-            },
-            {
-                id: 4,
-                title: "RPG Interface Design",
-                category: "UI/UX",
-                type: "UI Design",
-                thumbnail: "linear-gradient(135deg, #8b5cf6, #ec4899)",
-                description: "Complete interface suite for fantasy RPG with animated elements and intuitive navigation",
-                rating: 4.6,
-                downloads: "12K+",
-                tech: ["Figma", "Unity UI", "CSS"]
-            },
-            {
-                id: 5,
-                title: "Space Combat Demo",
-                category: "Games",
-                type: "Gameplay",
-                thumbnail: "linear-gradient(135deg, #6366f1, #3b82f6)",
-                description: "Fast-paced space combat with procedural asteroid fields and AI-driven enemies",
-                rating: 4.8,
-                downloads: "20K+",
-                tech: ["Unreal Engine", "C++", "Blueprint"]
-            },
-            {
-                id: 6,
-                title: "Character Showcase",
-                category: "Animations",
-                type: "Animation Reel",
-                thumbnail: "linear-gradient(135deg, #10b981, #14b8a6)",
-                description: "Professional character animation reel featuring advanced rigging and motion capture",
-                rating: 4.9,
-                downloads: "18K+",
-                tech: ["Maya", "MotionBuilder", "Zbrush"]
-            }
-        ];
-
-        let currentFilter = 'All';
-        const showcaseGrid = document.getElementById('showcaseGrid');
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const modal = document.getElementById('projectModal');
-        const modalClose = document.getElementById('modalClose');
-        const modalBody = document.getElementById('modalBody');
-
-        if (!showcaseGrid) return;
-
-        // Render showcase items
-        function renderShowcaseItems(items) {
-            showcaseGrid.innerHTML = '';
-            
-            items.forEach((item, index) => {
-                const shouldShow = currentFilter === 'All' || item.category === currentFilter;
-                
-                const itemElement = document.createElement('div');
-                itemElement.className = `showcase-item ${!shouldShow ? 'hidden' : ''}`;
-                itemElement.style.animationDelay = `${index * 0.1}s`;
-                
-                itemElement.innerHTML = `
-                    <div class="item-thumbnail" style="background: ${item.thumbnail}">
-                        <div class="play-overlay">
-                            <div class="play-button">
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="5,3 19,12 5,21"></polygon>
-                                </svg>
-                            </div>
-                        </div>
-                        
-                        <div class="category-badge">${item.type}</div>
-                        
-                        <div class="rating-badge">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
-                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                            </svg>
-                            <span>${item.rating}</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button class="action-btn" onclick="showNotification('GitHub repository opened!', 'info')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                </svg>
-                            </button>
-                            <button class="action-btn" onclick="showNotification('External link opened!', 'info')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                    <polyline points="15,3 21,3 21,9"></polyline>
-                                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="item-content">
-                        <div class="item-meta">
-                            <span class="item-category">${item.category}</span>
-                            <span class="item-downloads">${item.downloads} downloads</span>
-                        </div>
-                        
-                        <h3 class="item-title">${item.title}</h3>
-                        
-                        <p class="item-description">${item.description}</p>
-                        
-                        <div class="tech-stack">
-                            ${item.tech.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                        </div>
-                        
-                        <div class="item-footer">
-                            <button class="view-details" onclick="openModal(${item.id})">
-                                View Details
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                    <polyline points="15,3 21,3 21,9"></polyline>
-                                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                                </svg>
-                            </button>
-                            
-                            <div class="item-rating">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
-                                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                                </svg>
-                                <span>${item.rating}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                itemElement.addEventListener('click', (e) => {
-                    if (!e.target.closest('.action-buttons') && !e.target.closest('.view-details')) {
-                        openModal(item.id);
-                    }
-                });
-                
-                showcaseGrid.appendChild(itemElement);
-            });
-        }
-
-        // Filter functionality
-        if (filterButtons.length > 0) {
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    currentFilter = button.dataset.category;
-                    filterItems();
-                });
-            });
-        }
-
-        function filterItems() {
-            const items = document.querySelectorAll('.showcase-item');
-            
-            items.forEach((item, index) => {
-                const itemData = showcaseItems[index];
-                const shouldShow = currentFilter === 'All' || itemData.category === currentFilter;
-                
-                if (shouldShow) {
-                    item.classList.remove('hidden');
-                    item.style.animationDelay = `${Array.from(items).filter(i => !i.classList.contains('hidden')).indexOf(item) * 0.1}s`;
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        }
-
-        // Modal functionality
-        if (modal && modalClose && modalBody) {
-            modalClose.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal || e.target.classList.contains('modal-overlay')) {
-                    closeModal();
-                }
-            });
-            
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                    closeModal();
-                }
-            });
-        }
-
-        window.openModal = function(itemId) {
-            const item = showcaseItems.find(i => i.id === itemId);
-            if (!item || !modal || !modalBody) return;
-            
-            modalBody.innerHTML = `
-                <div style="padding-top: 2rem;">
-                    <div style="height: 300px; background: ${item.thumbnail}; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; position: relative;">
-                        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); border-radius: 8px;"></div>
-                        <div style="position: relative; z-index: 1; text-align: center;">
-                            <div style="width: 80px; height: 80px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);">
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: white; margin-left: 4px;">
-                                    <polygon points="5,3 19,12 5,21"></polygon>
-                                </svg>
-                            </div>
-                            <div style="color: white; font-weight: 600;">Interactive Demo Available</div>
-                        </div>
-                    </div>
-                    
-                    <div style="padding: 0 2rem 2rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <span style="background: var(--primary); color: var(--primary-foreground); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.875rem;">${item.category}</span>
-                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--muted-foreground);">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
-                                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                                </svg>
-                                <span>${item.rating}</span>
-                                <span style="margin-left: 1rem;">${item.downloads} downloads</span>
-                            </div>
-                        </div>
-                        
-                        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">${item.title}</h2>
-                        
-                        <p style="color: var(--muted-foreground); line-height: 1.6; margin-bottom: 1.5rem;">${item.description}</p>
-                        
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="margin-bottom: 0.5rem;">Technologies Used:</h3>
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                ${item.tech.map(tech => `<span style="background: var(--secondary); color: var(--secondary-foreground); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border);">${tech}</span>`).join('')}
-                            </div>
-                        </div>
-                        
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <button onclick="showNotification('Demo launched!', 'success')" style="background: var(--primary); color: var(--primary-foreground); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="5,3 19,12 5,21"></polygon>
-                                </svg>
-                                Play Demo
-                            </button>
-                            <button onclick="showNotification('Code repository opened!', 'info')" style="background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                </svg>
-                                View Code
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            modal.classList.remove('hidden');
-        };
-
-        function closeModal() {
-            if (modal) {
-                modal.classList.add('hidden');
-            }
-        }
-
-        // Initialize showcase
-        renderShowcaseItems(showcaseItems);
-    }
-
-    // Animation functionality
-    function initAnimations() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    entry.target.classList.add('animate-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        const animatedElements = document.querySelectorAll('.skill-card, .project-card, .achievement, .contact-item, .collaboration-card, .showcase-item');
-        animatedElements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-
-        // Parallax effect
-        function updateParallax() {
-            const scrolled = window.pageYOffset;
-            const heroBackground = document.querySelector('.hero-background');
-            if (heroBackground) {
-                heroBackground.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        }
-
-        let parallaxTicking = false;
-        window.addEventListener('scroll', function() {
-            if (!parallaxTicking) {
-                requestAnimationFrame(updateParallax);
-                parallaxTicking = true;
-                setTimeout(() => { parallaxTicking = false; }, 100);
-            }
-        });
-    }
-
-    // Particles functionality
-    function initParticles() {
-        function createParticle() {
-            const heroSection = document.querySelector('.hero-section');
-            if (!heroSection) return;
-            
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: absolute;
-                width: 2px;
-                height: 2px;
-                background: var(--primary);
-                border-radius: 50%;
-                opacity: 0.5;
-                pointer-events: none;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
-            `;
-            
-            heroSection.appendChild(particle);
-            
-            particle.animate([
-                { transform: 'translateY(0px)', opacity: 0.5 },
-                { transform: 'translateY(-100px)', opacity: 0 }
-            ], {
-                duration: 3000 + Math.random() * 2000,
-                easing: 'ease-out'
-            }).addEventListener('finish', () => {
-                particle.remove();
-            });
-        }
-
-        setInterval(createParticle, 500);
-    }
-
-    // Global notification function
-    window.showNotification = function(message, type = 'info') {
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notification => notification.remove());
-        
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? 'var(--primary)' : type === 'error' ? '#ef4444' : 'var(--card)'};
-            color: ${type === 'success' || type === 'error' ? 'white' : 'var(--foreground)'};
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            animation: slideInRight 0.3s ease;
-            max-width: 300px;
-            word-wrap: break-word;
-            border: 1px solid ${type === 'success' ? 'var(--primary)' : type === 'error' ? '#ef4444' : 'var(--border)'};
-        `;
-        notification.textContent = message;
-        
-        if (!document.querySelector('#notification-styles')) {
-            const style = document.createElement('style');
-            style.id = 'notification-styles';
-            style.textContent = `
-                @keyframes slideInRight {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOutRight {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        }, 5000);
-    };
-
-    // Button interactions
-    document.addEventListener('click', function(e) {
-        // Ripple effect for buttons
-        if (e.target.matches('.btn, .filter-btn, .play-button, .submit-btn')) {
-            const button = e.target;
-            const ripple = document.createElement('span');
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.height, rect.width);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                left: ${x}px;
-                top: ${y}px;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                pointer-events: none;
-                animation: ripple-animation 0.6s ease-out;
-            `;
-            
-            button.style.position = 'relative';
-            button.style.overflow = 'hidden';
-            button.appendChild(ripple);
-            
-            setTimeout(() => ripple.remove(), 600);
-        }
-
-        // Project card button actions
-        if (e.target.matches('.project-card .btn')) {
-            e.stopPropagation();
-            const action = e.target.textContent.trim();
-            const projectCard = e.target.closest('.project-card');
-            const projectTitle = projectCard.querySelector('.project-title').textContent;
-            showNotification(`${action} functionality for "${projectTitle}" would open here.`, 'info');
-        }
-    });
-
-    // Contact item hover effects
-    document.querySelectorAll('.contact-item').forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px) scale(1.02)';
-        });
-
-        item.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-
-    // Loading animation
-    window.addEventListener('load', function() {
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.5s ease';
-        setTimeout(() => {
-            document.body.style.opacity = '1';
-        }, 100);
-    });
-
-    // Featured demo button
-    const featuredPlayBtn = document.getElementById('featuredPlayBtn');
-    if (featuredPlayBtn) {
-        featuredPlayBtn.addEventListener('click', () => {
-            showNotification('Featured demo launched! 🎮', 'success');
-        });
-    }
-});
-
-// Utility functions
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();

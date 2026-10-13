@@ -13,9 +13,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="projects.css">
 </head>
+
 <body>
+    <div id="intro">
+        <div class="intro-content">
+            <div class="intro-logo">GD</div>
+            <div class="intro-text">GAME DESIGNER</div>
+        </div>
+        <button id="skipIntro">Skip</button>
+    </div>
 
     <!-- Matrix Rain Background -->
     <canvas id="matrix-rain"></canvas>
@@ -54,6 +61,11 @@
             <a href="#contact" class="mobile-link">Contact</a>
         </div>
     </nav>
+
+    <div class="energy-strip">
+        <canvas id="energy-canvas"></canvas>
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero-section">
         <div class="hero-background"></div>
@@ -110,25 +122,25 @@
 
     <!-- Interactive Demo Section -->
     <section class="demo-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title gradient-text">Interactive Demo</h2>
-                <p class="section-description">Experience my latest game creation</p>
+       <div class="ominex-demo">
+            <div class="ominex-header">
+                <span class="ai-dot"></span>
+                <h3>OMINEX – AI Core Online</h3>
             </div>
-            <div class="demo-container">
-                <div class="game-demo">
-                    <canvas id="game-canvas" width="800" height="400"></canvas>
-                    <div class="game-controls">
-                        <button id="start-game" class="btn btn-primary">Start Game</button>
-                        <button id="pause-game" class="btn btn-outline">Pause</button>
-                        <div class="game-score">Score: <span id="score">0</span></div>
-                    </div>
-                    <div class="game-instructions">
-                        <p>Use WASD or Arrow Keys to move • Click to shoot • Avoid obstacles</p>
-                    </div>
+
+            <div class="ominex-screen" id="ominexScreen">
+                <div class="msg ai">
+                    Hello. I am OMINEX.  
+                    Type <b>Run it</b> to activate.
                 </div>
             </div>
+
+            <div class="ominex-input">
+                <input id="ominexInput" type="text" placeholder="Talk to OMINEX…" />
+                <button id="ominexSend">Run it</button>
+            </div>
         </div>
+
     </section>
 
     <!-- About Section -->
@@ -189,7 +201,58 @@
                 <h2 class="section-title">Featured Projects</h2>
                 <p class="section-description">Explore my latest gaming creations and interactive experiences</p>
             </div>
-            <div class="projects-grid">
+            <div class="projects-grid">   
+            <!-- Minecraft / BlockCraft Project -->
+            <div class="project-card cyber-card" data-project="blockcraft">
+                <div class="project-image blockcraft">
+                    <img
+                        src="public/images/minecraft.jpg"
+                        alt="BlockCraft Minecraft-inspired 3D game"
+                        loading="lazy"
+                    >
+
+                    <div class="project-overlay">
+                        <a href="projects/blockcraft/index.html"
+                        class="btn btn-primary btn-sm"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                            Play Demo
+                        </a>
+
+                        <button class="btn btn-outline btn-sm"
+                                type="button"
+                                data-project="blockcraft">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <div class="project-content">
+                    <div class="project-category">
+                        3D Game Development
+                    </div>
+
+                    <h3 class="project-title">
+                        BlockCraft — Minecraft Demo
+                    </h3>
+
+                    <p class="project-description">
+                        A Minecraft-inspired interactive 3D sandbox
+                        featuring block placement and destruction,
+                        terrain exploration, player movement,
+                        jumping, trees, mountains and collision
+                        mechanics.
+                    </p>
+
+                    <div class="project-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Three.js</span>
+                        <span class="tag">HTML5</span>
+                        <span class="tag">3D Game</span>
+                    </div>
+                </div>
+            </div>
+
                 <div class="project-card cyber-card" data-project="cyber-runner">
                     <div class="project-image cyber-runner">
                         <img src="public/images/game1.jpg" alt="Cyber Runner Game">
