@@ -2332,3 +2332,8 @@ textarea::placeholder {
     transform: none !important;
   }
 }
+/* BlockCraft playable project addition */
+.blockcraft-image img { width:100%; height:100%; object-fit:cover; display:block; }
+.blockcraft-direct-link { display:inline-flex; margin-top:16px; color:#b8f2ab; font-weight:700; text-decoration:none; border-bottom:1px solid currentColor; }
+.blockcraft-direct-link:hover { color:#fff; }
+.blockcraft-card:focus-within { outline:2px solid #b8f2ab; outline-offset:3px; }

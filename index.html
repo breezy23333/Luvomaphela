@@ -1,676 +1,1398 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameDesigner Portfolio | Game Development & 3D Animation</title>
-    <meta name="description" content="Professional game designer specializing in game development, 3D animation, and video editing. Creating immersive gaming experiences.">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Luvo Maphela | Games, Websites, Animation & Video</title>
+
+  <meta
+    name="description"
+    content="Explore Luvo Maphela's game development, 3D animation, web projects and video editing, including Cinryvan, Lexryspell and Movie thinkers."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="intro">
-        <div class="intro-content">
-            <div class="intro-logo">GD</div>
-            <div class="intro-text">GAME DESIGNER</div>
-        </div>
-        <button id="skipIntro">Skip</button>
+
+  <!-- INTRO -->
+  <div id="intro">
+    <div class="intro-content">
+      <div class="intro-logo">LM</div>
+      <div class="intro-text">LUVO MAPHELA</div>
     </div>
 
-    <!-- Matrix Rain Background -->
-    <canvas id="matrix-rain"></canvas>
-    
-    <!-- Particle System -->
-    <canvas id="particles"></canvas>
+    <button id="skipIntro" type="button">Skip</button>
+  </div>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">
-                <div class="logo-icon">GD</div>
-                <span class="logo-text">GameDesigner</span>
-            </a>
-            
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#showcase" class="nav-link">Showcase</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            
-            <div class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="mobile-menu">
-            <a href="#home" class="mobile-link">Home</a>
-            <a href="#about" class="mobile-link">About</a>
-            <a href="#projects" class="mobile-link">Projects</a>
-            <a href="#showcase" class="mobile-link">Showcase</a>
-            <a href="#contact" class="mobile-link">Contact</a>
-        </div>
-    </nav>
+  <!-- ANIMATED BACKGROUNDS -->
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+  <canvas id="particles" aria-hidden="true"></canvas>
 
-    <div class="energy-strip">
-        <canvas id="energy-canvas"></canvas>
+  <!-- NAVIGATION -->
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <div class="logo-icon">LM</div>
+        <span class="logo-text">Luvo Maphela</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li>
+          <a href="#home" class="nav-link active">Home</a>
+        </li>
+        <li>
+          <a href="#about" class="nav-link">About</a>
+        </li>
+        <li>
+          <a href="#projects" class="nav-link">Projects</a>
+        </li>
+        <li>
+          <a href="#showcase" class="nav-link">Showcase</a>
+        </li>
+        <li>
+          <a href="#websites" class="nav-link">Websites</a>
+        </li>
+        <li>
+          <a href="#videos" class="nav-link">Videos</a>
+        </li>
+        <li>
+          <a href="#contact" class="nav-link">Contact</a>
+        </li>
+      </ul>
+
+      <button
+        class="mobile-menu-btn"
+        type="button"
+        aria-label="Toggle navigation"
+        aria-controls="mobileMenu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
 
-    <!-- Hero Section -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home" class="mobile-link">Home</a>
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#showcase" class="mobile-link">Showcase</a>
+      <a href="#websites" class="mobile-link">Websites</a>
+      <a href="#videos" class="mobile-link">Videos</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+  </nav>
+
+  <div class="energy-strip" aria-hidden="true">
+    <canvas id="energy-canvas"></canvas>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
     <section id="home" class="hero-section">
-        <div class="hero-background"></div>
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-avatar">
-                    <div class="avatar-glow">GD</div>
-                </div>
-                <h1 class="hero-title">
-                    <span class="gradient-text">Game Designer</span>
-                    <span class="hero-subtitle">& Developer</span>
-                </h1>
-                <p class="hero-description">
-                    Crafting immersive gaming experiences through innovative design, 
-                    cutting-edge code, and stunning visuals.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">View My Work</a>
-                    <a href="#contact" class="btn btn-outline">Get In Touch</a>
-                </div>
-            </div>
+      <div class="hero-background"></div>
+
+      <div class="container">
+        <div class="hero-content">
+          <p class="section-kicker">
+            LUVO MAPHELA / CREATIVE PORTFOLIO
+          </p>
+
+          <div class="hero-avatar">
+            <div class="avatar-glow">LM</div>
+          </div>
+
+          <h1 class="hero-title">
+            <span class="gradient-text">Game Designer</span>
+            <span class="hero-subtitle">
+              Developer &amp; Visual Creator
+            </span>
+          </h1>
+
+          <p class="hero-description">
+            Games, websites, animation and film — I bring ideas
+            to life through design, code and visual storytelling.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary">
+              View My Work
+            </a>
+
+            <a href="#contact" class="btn btn-outline">
+              Get In Touch
+            </a>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Skills Section -->
+    <!-- SKILLS: ORIGINAL SKILLS + WEB AND GRAPHIC DESIGN -->
     <section id="skills" class="skills-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">My <span class="gradient-text">Expertise</span></h2>
-                <p class="section-description">
-                    Combining technical skills with creative vision to deliver exceptional gaming experiences.
-                </p>
-            </div>
-            
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon">🎮</div>
-                    <h3>Game Development</h3>
-                    <p>Creating interactive gaming experiences with modern frameworks and engines.</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🎬</div>
-                    <h3>Video Editing</h3>
-                    <p>Professional video production and post-processing for gaming content.</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🎨</div>
-                    <h3>3D Animation</h3>
-                    <p>Bringing characters and environments to life with stunning 3D animations.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">
+            My <span class="gradient-text">Expertise</span>
+          </h2>
+
+          <p class="section-description">
+            Combining technical skills with creative vision
+            across games, websites, animation and video.
+          </p>
         </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-icon" aria-hidden="true">🎮</div>
+            <h3>Game Development</h3>
+            <p>
+              Creating interactive gaming experiences with
+              modern frameworks and engines.
+            </p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon" aria-hidden="true">🎬</div>
+            <h3>Video Editing</h3>
+            <p>
+              Professional video production and post-processing
+              for gaming content.
+            </p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon" aria-hidden="true">🎨</div>
+            <h3>3D Animation</h3>
+            <p>
+              Bringing characters and environments to life
+              with stunning 3D animations.
+            </p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon" aria-hidden="true">⌘</div>
+            <h3>Web Development</h3>
+            <p>
+              Responsive websites and applications built with
+              HTML, CSS, JavaScript, React and Next.js.
+            </p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon" aria-hidden="true">✦</div>
+            <h3>Graphic &amp; UI Design</h3>
+            <p>
+              Visual identities, digital layouts and interfaces
+              that connect clear communication with creative
+              expression.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Interactive Demo Section -->
+    <!-- ORIGINAL OMINEX DEMO -->
     <section class="demo-section">
-       <div class="ominex-demo">
-            <div class="ominex-header">
-                <span class="ai-dot"></span>
-                <h3>OMINEX – AI Core Online</h3>
-            </div>
-
-            <div class="ominex-screen" id="ominexScreen">
-                <div class="msg ai">
-                    Hello. I am OMINEX.  
-                    Type <b>Run it</b> to activate.
-                </div>
-            </div>
-
-            <div class="ominex-input">
-                <input id="ominexInput" type="text" placeholder="Talk to OMINEX…" />
-                <button id="ominexSend">Run it</button>
-            </div>
+      <div class="ominex-demo">
+        <div class="ominex-header">
+          <span class="ai-dot"></span>
+          <h3>OMINEX – AI Core Online</h3>
         </div>
 
+        <div class="ominex-screen" id="ominexScreen">
+          <div class="msg ai">
+            Hello. I am OMINEX.
+            Type <b>Run it</b> to activate.
+          </div>
+        </div>
+
+        <div class="ominex-input">
+          <input
+            id="ominexInput"
+            type="text"
+            placeholder="Talk to OMINEX…"
+            aria-label="Message OMINEX"
+          >
+
+          <button id="ominexSend" type="button">
+            Run it
+          </button>
+        </div>
+      </div>
     </section>
 
-    <!-- About Section -->
+    <!-- ABOUT -->
     <section id="about" class="about-section">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-content">
-                    <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
-                    <p class="about-text">
-                        I'm a passionate game designer and developer with a deep love for creating 
-                        immersive digital experiences. My journey combines technical expertise with 
-                        creative vision to bring gaming worlds to life.
-                    </p>
-                    <div class="achievements">
-                        <div class="achievement">
-                            <div class="achievement-icon">🎮</div>
-                            <div class="achievement-text">
-                                <span class="achievement-number">2+ Years</span>
-                                <span class="achievement-label">Game Development</span>
-                            </div>
-                        </div>
-                        <div class="achievement">
-                            <div class="achievement-icon">📦</div>
-                            <div class="achievement-text">
-                                <span class="achievement-number">10+ Projects</span>
-                                <span class="achievement-label">Completed</span>
-                            </div>
-                        </div>
-                        <div class="achievement">
-                            <div class="achievement-icon">🎨</div>
-                            <div class="achievement-text">
-                                <span class="achievement-number">3D Animation</span>
-                                <span class="achievement-label">Specialist</span>
-                            </div>
-                        </div>
-                        <div class="achievement">
-                            <div class="achievement-icon">🏆</div>
-                            <div class="achievement-text">
-                                <span class="achievement-number">Industry</span>
-                                <span class="achievement-label">Recognition</span>
-                            </div>
-                        </div>
-                    </div>
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-content">
+            <h2 class="section-title">
+              About <span class="gradient-text">Me</span>
+            </h2>
+
+            <p class="about-text">
+              I'm a passionate game designer and developer with
+              a deep love for creating immersive digital
+              experiences. My journey combines technical
+              expertise with creative vision to bring gaming
+              worlds to life.
+            </p>
+
+            <div class="achievements">
+              <div class="achievement">
+                <div class="achievement-icon" aria-hidden="true">
+                  🎮
                 </div>
-                <div class="about-image">
-                    <div class="profile-card">
-                        <div class="profile-avatar">GD</div>
-                    </div>
+                <div class="achievement-text">
+                  <span class="achievement-number">2+ Years</span>
+                  <span class="achievement-label">
+                    Game Development
+                  </span>
                 </div>
+              </div>
+
+              <div class="achievement">
+                <div class="achievement-icon" aria-hidden="true">
+                  📦
+                </div>
+                <div class="achievement-text">
+                  <span class="achievement-number">
+                    10+ Projects
+                  </span>
+                  <span class="achievement-label">Completed</span>
+                </div>
+              </div>
+
+              <div class="achievement">
+                <div class="achievement-icon" aria-hidden="true">
+                  🎨
+                </div>
+                <div class="achievement-text">
+                  <span class="achievement-number">
+                    3D Animation
+                  </span>
+                  <span class="achievement-label">Specialist</span>
+                </div>
+              </div>
+
+              <div class="achievement">
+                <div class="achievement-icon" aria-hidden="true">
+                  🏆
+                </div>
+                <div class="achievement-text">
+                  <span class="achievement-number">Industry</span>
+                  <span class="achievement-label">
+                    Recognition
+                  </span>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="about-image">
+            <div class="profile-card">
+              <div class="profile-avatar">LM</div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Projects Section -->
+    <!-- ORIGINAL GAME PROJECTS -->
     <section id="projects" class="projects-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Featured Projects</h2>
-                <p class="section-description">Explore my latest gaming creations and interactive experiences</p>
-            </div>
-            <div class="projects-grid">   
-            <!-- Minecraft / BlockCraft Project -->
-            <div class="project-card cyber-card" data-project="blockcraft">
-                <div class="project-image blockcraft">
-                    <img
-                        src="public/images/minecraft.jpg"
-                        alt="BlockCraft Minecraft-inspired 3D game"
-                        loading="lazy"
-                    >
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Featured Projects</h2>
 
-                    <div class="project-overlay">
-                        <a href="projects/blockcraft/index.html"
-                        class="btn btn-primary btn-sm"
-                        target="_blank"
-                        rel="noopener noreferrer">
-                            Play Demo
-                        </a>
-
-                        <button class="btn btn-outline btn-sm"
-                                type="button"
-                                data-project="blockcraft">
-                            View Details
-                        </button>
-                    </div>
-                </div>
-
-                <div class="project-content">
-                    <div class="project-category">
-                        3D Game Development
-                    </div>
-
-                    <h3 class="project-title">
-                        BlockCraft — Minecraft Demo
-                    </h3>
-
-                    <p class="project-description">
-                        A Minecraft-inspired interactive 3D sandbox
-                        featuring block placement and destruction,
-                        terrain exploration, player movement,
-                        jumping, trees, mountains and collision
-                        mechanics.
-                    </p>
-
-                    <div class="project-tags">
-                        <span class="tag">JavaScript</span>
-                        <span class="tag">Three.js</span>
-                        <span class="tag">HTML5</span>
-                        <span class="tag">3D Game</span>
-                    </div>
-                </div>
-            </div>
-
-                <div class="project-card cyber-card" data-project="cyber-runner">
-                    <div class="project-image cyber-runner">
-                        <img src="public/images/game1.jpg" alt="Cyber Runner Game">
-                        <div class="project-overlay">
-                            <button class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Play Demo</button>
-                            <button class="btn btn-outline btn-sm"><i class="fas fa-code"></i> View Code</button>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-category">Action Game</div>
-                        <h3 class="project-title">Cyber Runner</h3>
-                        <p class="project-description">
-                            A fast-paced cyberpunk endless runner with stunning visuals and fluid gameplay mechanics.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Unity</span>
-                            <span class="tag">C#</span>
-                            <span class="tag">2D/3D</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card cyber-card" data-project="fantasy-ui">
-                    <div class="project-image fantasy-ui">
-                        <img src="public/images/game2.jpg" alt="Fantasy RPG UI">
-                        <div class="project-overlay">
-                            <button class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Demo</button>
-                            <button class="btn btn-outline btn-sm"><i class="fas fa-download"></i> Assets</button>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-category">UI/UX Design</div>
-                        <h3 class="project-title">Fantasy RPG Interface</h3>
-                        <p class="project-description">
-                            Complete UI system for fantasy RPG games with inventory, spells, and character management.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">UI Design</span>
-                            <span class="tag">Animation</span>
-                            <span class="tag">Figma</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card cyber-card" data-project="space-combat">
-                    <div class="project-image vr-experience">
-                        <img src="public/images/game3.jpg" alt="Space Combat Game">
-                        <div class="project-overlay">
-                            <button class="btn btn-primary btn-sm"><i class="fas fa-vr-cardboard"></i> VR Demo</button>
-                            <button class="btn btn-outline btn-sm"><i class="fas fa-info"></i> Details</button>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-category">VR Experience</div>
-                        <h3 class="project-title">Space Combat VR</h3>
-                        <p class="project-description">
-                            Immersive VR space combat experience with realistic physics and stunning space environments.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Unreal Engine</span>
-                            <span class="tag">VR</span>
-                            <span class="tag">Blueprint</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <p class="section-description">
+            Explore my latest gaming creations and interactive
+            experiences.
+          </p>
         </div>
+
+        <div class="projects-grid">
+
+          <!-- BLOCKCRAFT / ACTUAL PLAYABLE THREE.JS PROJECT -->
+          <article class="project-card blockcraft-card" data-project="blockcraft">
+            <div class="project-image blockcraft-image">
+              <img src="img/blockcraft-preview.svg" alt="Illustration of BlockCraft's voxel landscape, trees and mountains" loading="lazy">
+              <div class="project-overlay">
+                <button class="btn btn-primary btn-sm" type="button">Play Demo</button>
+                <button class="btn btn-outline btn-sm" type="button">View Details</button>
+              </div>
+            </div>
+            <div class="project-content">
+              <div class="project-category">3D Browser Game · Playable</div>
+              <h3 class="project-title">BlockCraft — Voxel Sandbox</h3>
+              <p class="project-description">A Minecraft-inspired 3D world with explorable mountains, trees, first-person movement, jumping and placeable blocks.</p>
+              <div class="project-tags"><span class="tag">JavaScript</span><span class="tag">Three.js</span><span class="tag">3D</span><span class="tag">Game Development</span></div>
+              <a class="blockcraft-direct-link" href="games/blockcraft/index.html" target="_blank" rel="noopener noreferrer">Launch playable game ↗</a>
+            </div>
+          </article>
+
+          <!-- CYBER RUNNER -->
+          <div
+            class="project-card cyber-card"
+            data-project="cyber-runner"
+          >
+            <div class="project-image cyber-runner">
+              <img
+                src="public/images/game1.jpg"
+                alt="Cyber Runner Game"
+                loading="lazy"
+              >
+
+              <div class="project-overlay">
+                <button
+                  class="btn btn-primary btn-sm"
+                  type="button"
+                >
+                  Play Demo
+                </button>
+
+                <button
+                  class="btn btn-outline btn-sm"
+                  type="button"
+                >
+                  View Code
+                </button>
+              </div>
+            </div>
+
+            <div class="project-content">
+              <div class="project-category">Action Game</div>
+              <h3 class="project-title">Cyber Runner</h3>
+
+              <p class="project-description">
+                A fast-paced cyberpunk endless runner with
+                stunning visuals and fluid gameplay mechanics.
+              </p>
+
+              <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">2D/3D</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- FANTASY RPG INTERFACE -->
+          <div
+            class="project-card cyber-card"
+            data-project="fantasy-ui"
+          >
+            <div class="project-image fantasy-ui">
+              <img
+                src="public/images/game2.jpg"
+                alt="Fantasy RPG UI"
+                loading="lazy"
+              >
+
+              <div class="project-overlay">
+                <button
+                  class="btn btn-primary btn-sm"
+                  type="button"
+                >
+                  Demo
+                </button>
+
+                <button
+                  class="btn btn-outline btn-sm"
+                  type="button"
+                >
+                  Assets
+                </button>
+              </div>
+            </div>
+
+            <div class="project-content">
+              <div class="project-category">UI/UX Design</div>
+
+              <h3 class="project-title">
+                Fantasy RPG Interface
+              </h3>
+
+              <p class="project-description">
+                Complete UI system for fantasy RPG games with
+                inventory, spells, and character management.
+              </p>
+
+              <div class="project-tags">
+                <span class="tag">UI Design</span>
+                <span class="tag">Animation</span>
+                <span class="tag">Figma</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SPACE COMBAT VR -->
+          <div
+            class="project-card cyber-card"
+            data-project="space-combat"
+          >
+            <div class="project-image vr-experience">
+              <img
+                src="public/images/game3.jpg"
+                alt="Space Combat Game"
+                loading="lazy"
+              >
+
+              <div class="project-overlay">
+                <button
+                  class="btn btn-primary btn-sm"
+                  type="button"
+                >
+                  VR Demo
+                </button>
+
+                <button
+                  class="btn btn-outline btn-sm"
+                  type="button"
+                >
+                  Details
+                </button>
+              </div>
+            </div>
+
+            <div class="project-content">
+              <div class="project-category">VR Experience</div>
+              <h3 class="project-title">Space Combat VR</h3>
+
+              <p class="project-description">
+                Immersive VR space combat experience with
+                realistic physics and stunning space environments.
+              </p>
+
+              <div class="project-tags">
+                <span class="tag">Unreal Engine</span>
+                <span class="tag">VR</span>
+                <span class="tag">Blueprint</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </section>
 
-    
-
-    <!-- Showcase Section -->
+    <!-- ORIGINAL INTERACTIVE SHOWCASE -->
     <section id="showcase" class="showcase-section">
-        <div class="floating-elements">
-            <div class="floating-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="5,3 19,12 5,21"></polygon>
-                </svg>
-            </div>
+      <div class="floating-elements" aria-hidden="true">
+        <div class="floating-icon">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polygon points="5,3 19,12 5,21"></polygon>
+          </svg>
         </div>
-        
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <span class="gradient-text">Interactive Showcase</span>
-                </h2>
-                <p class="section-description">
-                    Experience my latest work through interactive demos, visual presentations, and immersive content 
-                    spanning game development, 3D animation, and video production.
+      </div>
+
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="gradient-text">
+              Interactive Showcase
+            </span>
+          </h2>
+
+          <p class="section-description">
+            Experience my latest work through interactive demos,
+            visual presentations, and immersive content spanning
+            game development, 3D animation, and video production.
+          </p>
+        </div>
+
+        <div class="category-filter">
+          <button
+            class="filter-btn active"
+            data-category="All"
+            type="button"
+          >
+            All
+          </button>
+
+          <button
+            class="filter-btn"
+            data-category="Games"
+            type="button"
+          >
+            Games
+          </button>
+
+          <button
+            class="filter-btn"
+            data-category="Animations"
+            type="button"
+          >
+            Animations
+          </button>
+
+          <button
+            class="filter-btn"
+            data-category="Videos"
+            type="button"
+          >
+            Videos
+          </button>
+
+          <button
+            class="filter-btn"
+            data-category="UI/UX"
+            type="button"
+          >
+            UI/UX
+          </button>
+        </div>
+
+        <!-- Existing statistics retained from your original HTML -->
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number gradient-text">50+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number gradient-text">100K+</div>
+            <div class="stat-label">Downloads</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number gradient-text">4.8★</div>
+            <div class="stat-label">Rating</div>
+          </div>
+        </div>
+
+        <!-- Existing showcase items are populated by script.js -->
+        <div class="showcase-grid" id="showcaseGrid"></div>
+
+        <!-- ORIGINAL FEATURED DEMO -->
+        <div class="featured-section">
+          <h3 class="section-title">
+            <span class="gradient-text">
+              Featured Interactive Demo
+            </span>
+          </h3>
+
+          <div class="featured-grid">
+            <div class="featured-content">
+              <div class="featured-icon" aria-hidden="true">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon points="5,3 19,12 5,21"></polygon>
+                </svg>
+              </div>
+
+              <h4>Next-Gen Gaming Experience</h4>
+
+              <p>
+                Dive into my most ambitious project featuring
+                cutting-edge technology, immersive gameplay
+                mechanics, and stunning visual effects.
+              </p>
+
+              <div class="features-grid">
+                <div class="feature-list">
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span>Real-time Ray Tracing</span>
+                  </div>
+
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span>Advanced AI Systems</span>
+                  </div>
+                </div>
+
+                <div class="feature-list">
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span>Procedural Generation</span>
+                  </div>
+
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span>Cross-Platform Support</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="featured-buttons">
+                <button
+                  class="btn btn-primary"
+                  id="featuredPlayBtn"
+                  type="button"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <polygon points="5,3 19,12 5,21"></polygon>
+                  </svg>
+
+                  Launch Demo
+                </button>
+
+                <button class="btn btn-outline" type="button">
+                  View Code
+                </button>
+              </div>
+            </div>
+
+            <div class="featured-demo">
+              <div class="demo-container">
+                <div class="demo-background" aria-hidden="true">
+                  <div class="floating-element"></div>
+                  <div class="floating-element"></div>
+                  <div class="floating-element"></div>
+                </div>
+
+                <div class="demo-content">
+                  <div class="play-button">
+                    <svg
+                      width="36"
+                      height="36"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <polygon points="5,3 19,12 5,21"></polygon>
+                    </svg>
+                  </div>
+
+                  <div class="demo-info">
+                    <div class="demo-title">
+                      Interactive Demo Ready
+                    </div>
+
+                    <div class="demo-subtitle">
+                      Click to experience the future of gaming
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW: WEBSITES -->
+    <section id="websites" class="websites-section">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-kicker">BUILT FOR THE WEB</p>
+
+          <h2 class="section-title">
+            My <span class="gradient-text">Websites</span>
+          </h2>
+
+          <p class="section-description">
+            Two personal platforms, designed and developed
+            from idea to working website.
+          </p>
+        </div>
+
+        <div class="websites-grid">
+
+          <!-- CINRYVAN -->
+          <article class="website-card website-card-cinryvan">
+            <a
+              class="website-visual cinryvan-visual"
+              href="https://cinryvan.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Cinryvan (opens in a new tab)"
+            >
+              <span class="website-number">
+                01 / ENTERTAINMENT
+              </span>
+
+              <span class="website-wordmark">CINRYVAN</span>
+
+              <span class="website-tagline">
+                Your next story starts here.
+              </span>
+
+              <span class="website-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+
+            <div class="website-content">
+              <p class="project-category">
+                Entertainment discovery platform
+              </p>
+
+              <h3>Cinryvan</h3>
+
+              <p>
+                Explore movies, TV shows, anime and games
+                with trailers, ratings, cast information
+                and streaming options.
+              </p>
+
+              <div class="project-tags">
+                <span class="tag">Next.js</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Tailwind CSS</span>
+                <span class="tag">API Integration</span>
+              </div>
+
+              <a
+                class="btn btn-primary"
+                href="https://cinryvan.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Explore Cinryvan ↗
+              </a>
+            </div>
+          </article>
+
+          <!-- LEXRYSPELL -->
+          <article class="website-card website-card-lexryspell">
+            <a
+              class="website-visual lexryspell-visual"
+              href="https://lexryspell.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Lexryspell (opens in a new tab)"
+            >
+              <span class="website-number">
+                02 / LANGUAGE TOOL
+              </span>
+
+              <span class="website-wordmark">Lexryspell.</span>
+
+              <span class="website-tagline">
+                Find the word you’re looking for.
+              </span>
+
+              <span class="website-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+
+            <div class="website-content">
+              <p class="project-category">
+                Word discovery &amp; pronunciation
+              </p>
+
+              <h3>Lexryspell</h3>
+
+              <p>
+                Find words from descriptions, explore definitions
+                and spelling, and use pronunciation and voice
+                input to support discovery.
+              </p>
+
+              <div class="project-tags">
+                <span class="tag">Next.js</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Dictionary APIs</span>
+                <span class="tag">Voice Input</span>
+              </div>
+
+              <a
+                class="btn btn-primary"
+                href="https://lexryspell.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Explore Lexryspell ↗
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW: YOUTUBE VIDEOS -->
+    <section id="videos" class="videos-section">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-kicker">
+            MOVIE THINKERS / YOUTUBE
+          </p>
+
+          <h2 class="section-title">
+            Editing. Stories.
+            <span class="gradient-text">Impact.</span>
+          </h2>
+
+          <p class="section-description">
+            Watch my videos alongside my game development
+            and animation work.
+          </p>
+        </div>
+
+        <div class="youtube-grid">
+
+          <!-- LIFE IS HARD -->
+          <article class="youtube-card">
+            <a
+              class="youtube-link"
+              href="https://www.youtube.com/watch?v=jVzsSCI7LUo"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div class="youtube-thumbnail">
+                <img
+                  src="https://i.ytimg.com/vi/jVzsSCI7LUo/hqdefault.jpg"
+                  alt=""
+                  width="480"
+                  height="360"
+                  loading="lazy"
+                >
+
+                <span class="youtube-play" aria-hidden="true">
+                  ▶
+                </span>
+              </div>
+
+              <div class="youtube-content">
+                <p class="project-category">
+                  Movie thinkers · Video
                 </p>
-            </div>
 
-            <!-- Category Filter -->
-            <div class="category-filter">
-                <button class="filter-btn active" data-category="All">All</button>
-                <button class="filter-btn" data-category="Games">Games</button>
-                <button class="filter-btn" data-category="Animations">Animations</button>
-                <button class="filter-btn" data-category="Videos">Videos</button>
-                <button class="filter-btn" data-category="UI/UX">UI/UX</button>
-            </div>
+                <h3>LIFE IS HARD</h3>
 
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number gradient-text">50+</div>
-                    <div class="stat-label">Projects</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number gradient-text">100K+</div>
-                    <div class="stat-label">Downloads</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number gradient-text">4.8★</div>
-                    <div class="stat-label">Rating</div>
-                </div>
-            </div>
+                <span class="youtube-cta">
+                  Watch on YouTube ↗
+                </span>
+              </div>
+            </a>
+          </article>
 
-            <!-- Showcase Grid -->
-            <div class="showcase-grid" id="showcaseGrid">
-                <!-- Items will be populated by JavaScript -->
-            </div>
+          <!-- SUPERHERO VIDEO -->
+          <article class="youtube-card">
+            <a
+              class="youtube-link"
+              href="https://www.youtube.com/watch?v=Y6M9mG-ENeg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div class="youtube-thumbnail">
+                <img
+                  src="https://i.ytimg.com/vi/Y6M9mG-ENeg/hqdefault.jpg"
+                  alt=""
+                  width="480"
+                  height="360"
+                  loading="lazy"
+                >
 
-            <!-- Featured Showcase -->
-            <div class="featured-section">
-                <h3 class="section-title">
-                    <span class="gradient-text">Featured Interactive Demo</span>
+                <span class="youtube-play" aria-hidden="true">
+                  ▶
+                </span>
+              </div>
+
+              <div class="youtube-content">
+                <p class="project-category">
+                  Movie thinkers · Video
+                </p>
+
+                <h3>
+                  Biggest Superhero Movies &amp; Series
+                  You Need to Watch
                 </h3>
 
-                <div class="featured-grid">
-                    <div class="featured-content">
-                        <div class="featured-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5,3 19,12 5,21"></polygon>
-                            </svg>
-                        </div>
-                        
-                        <h4>Next-Gen Gaming Experience</h4>
-                        
-                        <p>
-                            Dive into my most ambitious project featuring cutting-edge technology, 
-                            immersive gameplay mechanics, and stunning visual effects.
-                        </p>
-                        
-                        <div class="features-grid">
-                            <div class="feature-list">
-                                <div class="feature-item">
-                                    <div class="feature-dot"></div>
-                                    <span>Real-time Ray Tracing</span>
-                                </div>
-                                <div class="feature-item">
-                                    <div class="feature-dot"></div>
-                                    <span>Advanced AI Systems</span>
-                                </div>
-                            </div>
-                            <div class="feature-list">
-                                <div class="feature-item">
-                                    <div class="feature-dot"></div>
-                                    <span>Procedural Generation</span>
-                                </div>
-                                <div class="feature-item">
-                                    <div class="feature-dot"></div>
-                                    <span>Cross-Platform Support</span>
-                                </div>
-                            </div>
-                        </div>
+                <span class="youtube-cta">
+                  Watch on YouTube ↗
+                </span>
+              </div>
+            </a>
+          </article>
 
-                        <div class="featured-buttons">
-                            <button class="btn btn-primary" id="featuredPlayBtn">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="5,3 19,12 5,21"></polygon>
-                                </svg>
-                                Launch Demo
-                            </button>
-                            <button class="btn btn-outline">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                </svg>
-                                View Code
-                            </button>
-                        </div>
-                    </div>
+          <!-- HORROR VIDEO -->
+          <article class="youtube-card">
+            <a
+              class="youtube-link"
+              href="https://www.youtube.com/watch?v=d3KBFrlGhos"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div class="youtube-thumbnail">
+                <img
+                  src="https://i.ytimg.com/vi/d3KBFrlGhos/hqdefault.jpg"
+                  alt=""
+                  width="480"
+                  height="360"
+                  loading="lazy"
+                >
 
-                    <div class="featured-demo">
-                        <div class="demo-container">
-                            <div class="demo-background">
-                                <div class="floating-element"></div>
-                                <div class="floating-element"></div>
-                                <div class="floating-element"></div>
-                            </div>
-                            
-                            <div class="demo-content">
-                                <div class="play-button">
-                                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polygon points="5,3 19,12 5,21"></polygon>
-                                    </svg>
-                                </div>
-                                <div class="demo-info">
-                                    <div class="demo-title">Interactive Demo Ready</div>
-                                    <div class="demo-subtitle">Click to experience the future of gaming</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                <span class="youtube-play" aria-hidden="true">
+                  ▶
+                </span>
+              </div>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">
-                    Get In <span class="gradient-text">Touch</span>
-                </h2>
-                <p class="section-description">
-                    Ready to bring your gaming vision to life? Let's discuss your project 
-                    and create something amazing together.
+              <div class="youtube-content">
+                <p class="project-category">
+                  Movie thinkers · Video
                 </p>
-            </div>
 
-            <div class="contact-grid">
-                <!-- Contact Form -->
-                <div class="contact-form-container">
-                    <h3 class="section-title">
-                        <span class="gradient-text">Send a Message</span>
-                    </h3>
-                    
-                    <form id="contactForm" class="contact-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <div class="input-container">
-                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                    <input type="text" name="name" placeholder="Your Name" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-container">
-                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                        <polyline points="22,6 12,13 2,6"></polyline>
-                                    </svg>
-                                    <input type="email" name="email" placeholder="Your Email" required>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="input-container">
-                                <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                                <input type="text" name="subject" placeholder="Subject" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <textarea name="message" placeholder="Your message..." required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                <polygon points="22,2 15,22 11,13 2,9"></polygon>
-                            </svg>
-                            Send Message
-                        </button>
-                    </form>
-                </div>
+                <h3>
+                  Top 10 Horror Movie Franchises of All Time
+                </h3>
 
-                <!-- Contact Information -->
-                <div class="contact-info-container">
-                    <h3 class="section-title">
-                        <span class="gradient-text">Contact Information</span>
-                    </h3>
-                    
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </div>
-                            <div class="contact-details">
-                                <h4>Email</h4>
-                                <p class="contact-value">luvomaphela0@gmail.com</p>
-                                <p class="contact-desc">Send me an email anytime</p>
-                            </div>
-                        </div>
+                <span class="youtube-cta">
+                  Watch on YouTube ↗
+                </span>
+              </div>
+            </a>
+          </article>
 
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                            </div>
-                            <div class="contact-details">
-                                <h4>Phone</h4>
-                                <p class="contact-value">+27 83 607 8398</p>
-                                <p class="contact-desc">Available for calls</p>
-                            </div>
-                        </div>
-
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                            </div>
-                            <div class="contact-details">
-                                <h4>Location</h4>
-                                <p class="contact-value">Gaming Hub, Tech City</p>
-                                <p class="contact-desc">Open to remote work</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="collaboration-card">
-                        <h4>Let's Collaborate</h4>
-                        <p>
-                            I'm always excited to work on new projects and bring creative visions to life. 
-                            Whether you need game development, 3D animation, or video editing services, 
-                            I'm here to help make your ideas a reality.
-                        </p>
-                        <div class="features">
-                            <div class="feature">
-                                <div class="feature-dot"></div>
-                                <span>Quick response within 24 hours</span>
-                            </div>
-                            <div class="feature">
-                                <div class="feature-dot"></div>
-                                <span>Free initial consultation</span>
-                            </div>
-                            <div class="feature">
-                                <div class="feature-dot"></div>
-                                <span>Flexible project timelines</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
+        <div class="youtube-channel-link">
+          <a
+            class="btn btn-outline"
+            href="https://www.youtube.com/@Moviethinkers"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit Movie thinkers ↗
+          </a>
+        </div>
+      </div>
     </section>
 
-    <!-- Modal for project details -->
-    <div id="projectModal" class="modal hidden">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
+    <!-- ORIGINAL CONTACT SECTION -->
+    <section id="contact" class="contact-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">
+            Get In <span class="gradient-text">Touch</span>
+          </h2>
+
+          <p class="section-description">
+            Ready to bring your next idea to life? Let's
+            discuss your project and create something
+            amazing together.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+
+          <!-- CONTACT FORM -->
+          <div class="contact-form-container">
+            <h3 class="section-title">
+              <span class="gradient-text">Send a Message</span>
+            </h3>
+
+            <form id="contactForm" class="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <div class="input-container">
+                    <svg
+                      class="input-icon"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                      ></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Your Name"
+                      aria-label="Your name"
+                      autocomplete="name"
+                      required
+                    >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-container">
+                    <svg
+                      class="input-icon"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                      ></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Your Email"
+                      aria-label="Your email"
+                      autocomplete="email"
+                      required
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="input-container">
+                  <svg
+                    class="input-icon"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                    ></path>
+                  </svg>
+
+                  <input
+                    type="text"
+                    name="subject"
+                    placeholder="Subject"
+                    aria-label="Subject"
+                    required
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <textarea
+                  name="message"
+                  placeholder="Your message..."
+                  aria-label="Your message"
+                  rows="6"
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="submit-btn">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22,2 15,22 11,13 2,9"></polygon>
                 </svg>
-            </button>
-            <div class="modal-body" id="modalBody">
-                <!-- Content will be populated by JavaScript -->
+
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          <!-- CONTACT INFORMATION -->
+          <div class="contact-info-container">
+            <h3 class="section-title">
+              <span class="gradient-text">
+                Contact Information
+              </span>
+            </h3>
+
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                    ></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </div>
+
+                <div class="contact-details">
+                  <h4>Email</h4>
+
+                  <p class="contact-value">
+                    <a href="mailto:luvomaphela0@gmail.com">
+                      luvomaphela0@gmail.com
+                    </a>
+                  </p>
+
+                  <p class="contact-desc">
+                    Send me an email anytime
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    ></path>
+                  </svg>
+                </div>
+
+                <div class="contact-details">
+                  <h4>Phone</h4>
+
+                  <p class="contact-value">
+                    <a href="tel:+27836078398">
+                      +27 83 607 8398
+                    </a>
+                  </p>
+
+                  <p class="contact-desc">
+                    Available for calls
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+                    ></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+
+                <div class="contact-details">
+                  <h4>Location</h4>
+
+                  <p class="contact-value">South Africa</p>
+
+                  <p class="contact-desc">
+                    Open to remote work
+                  </p>
+                </div>
+              </div>
             </div>
+
+            <div class="collaboration-card">
+              <h4>Let's Collaborate</h4>
+
+              <p>
+                I'm always excited to work on new projects and
+                bring creative visions to life. Whether you
+                need game development, web development, design,
+                3D animation, or video editing services, I'm
+                here to help make your ideas a reality.
+              </p>
+
+              <div class="features">
+                <div class="feature">
+                  <div class="feature-dot"></div>
+                  <span>Quick response within 24 hours</span>
+                </div>
+
+                <div class="feature">
+                  <div class="feature-dot"></div>
+                  <span>Free initial consultation</span>
+                </div>
+
+                <div class="feature">
+                  <div class="feature-dot"></div>
+                  <span>Flexible project timelines</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ORIGINAL PROJECT MODAL -->
+  <div
+    id="projectModal"
+    class="modal hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Project details"
+  >
+    <div class="modal-overlay"></div>
+
+    <div class="modal-content">
+      <button
+        class="modal-close"
+        id="modalClose"
+        type="button"
+        aria-label="Close project details"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-body" id="modalBody">
+        <!-- Project content is populated by script.js -->
+      </div>
     </div>
+  </div>
 
-    <!-- Toast notification -->
-    <div id="toast" class="toast hidden">
-        <div class="toast-content">
-            <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20,6 9,17 4,12"></polyline>
-            </svg>
-            <div>
-                <div class="toast-title">Message Sent!</div>
-                <div class="toast-description">Thank you for your message. I'll get back to you soon.</div>
-            </div>
-        </div>
+  <!-- NOTIFICATION CONTAINER -->
+  <div
+    id="toast"
+    class="toast hidden"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="toast-content">
+      <svg
+        class="toast-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <polyline points="20,6 9,17 4,12"></polyline>
+      </svg>
+
+      <div>
+        <div class="toast-title"></div>
+        <div class="toast-description"></div>
+      </div>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <div class="logo-icon">GD</div>
-                        <span class="logo-text">GameDesigner</span>
-                    </div>
-                    <p class="footer-description">
-                        Creating immersive gaming experiences through code, visuals, and animation.
-                    </p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Skills</h3>
-                    <ul class="footer-links">
-                        <li>Game Development</li>
-                        <li>3D Animation</li>
-                        <li>Video Editing</li>
-                        <li>UI/UX Design</li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Connect</h3>
-                    <div class="social-links">
-                        <a href="#" class="social-link">GitHub</a>
-                        <a href="#" class="social-link">LinkedIn</a>
-                        <a href="#" class="social-link">Email</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 GameDesigner Portfolio. All rights reserved.</p>
-            </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-icon">LM</div>
+            <span class="logo-text">Luvo Maphela</span>
+          </div>
+
+          <p class="footer-description">
+            Creating immersive gaming experiences through
+            code, visuals, and animation.
+          </p>
         </div>
-    </footer>
 
-    <script src="script.js"></script>
+        <div class="footer-section">
+          <h3>Skills</h3>
+
+          <ul class="footer-links">
+            <li>Game Development</li>
+            <li>3D Animation</li>
+            <li>Video Editing</li>
+            <li>UI/UX Design</li>
+            <li>Web Development</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Connect</h3>
+
+          <div class="social-links">
+            <!-- Original placeholders; add your profile URLs later -->
+            <a href="#" class="social-link">GitHub</a>
+            <a href="#" class="social-link">LinkedIn</a>
+
+            <a
+              href="mailto:luvomaphela0@gmail.com"
+              class="social-link"
+            >
+              Email
+            </a>
+
+            <a
+              href="https://www.youtube.com/@Moviethinkers"
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              YouTube
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          &copy; 2026 Luvo Maphela. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

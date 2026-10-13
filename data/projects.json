@@ -1,8 +1,8 @@
 [
   {
     "id": "game-awaits",
-    "title": "Game Awaits — Endless Runner (Unity/C#)",
-    "role": "Game Dev · Designer · Programmer",
+    "title": "Game Awaits \u2014 Endless Runner (Unity/C#)",
+    "role": "Game Dev \u00b7 Designer \u00b7 Programmer",
     "year": "2025",
     "tags": [
       "Unity",
@@ -26,8 +26,8 @@
   },
   {
     "id": "ominex",
-    "title": "OMINEX — AI Assistant (Web + Voice)",
-    "role": "Full‑stack · AI · UI/UX",
+    "title": "OMINEX \u2014 AI Assistant (Web + Voice)",
+    "role": "Full\u2011stack \u00b7 AI \u00b7 UI/UX",
     "year": "2025",
     "tags": [
       "Python",
@@ -53,7 +53,7 @@
   {
     "id": "trade-bot",
     "title": "Crypto Trade Bot Dashboard (Streamlit)",
-    "role": "Python Dev · Data Viz",
+    "role": "Python Dev \u00b7 Data Viz",
     "year": "2025",
     "tags": [
       "Python",
@@ -78,7 +78,7 @@
   {
     "id": "motion-reel",
     "title": "Motion Graphics Reel",
-    "role": "Video Editor · Motion Designer",
+    "role": "Video Editor \u00b7 Motion Designer",
     "year": "2025",
     "tags": [
       "After Effects",
@@ -99,8 +99,8 @@
   },
   {
     "id": "99-fashion",
-    "title": "99 Fashion — Neon Futurism Lookbook",
-    "role": "3D · Art Direction",
+    "title": "99 Fashion \u2014 Neon Futurism Lookbook",
+    "role": "3D \u00b7 Art Direction",
     "year": "2025",
     "tags": [
       "3D",
@@ -121,7 +121,7 @@
   },
   {
     "id": "js-minis",
-    "title": "JavaScript Minis — APIs & Widgets",
+    "title": "JavaScript Minis \u2014 APIs & Widgets",
     "role": "Frontend Dev",
     "year": "2025",
     "tags": [
@@ -141,5 +141,29 @@
       "github": "#"
     },
     "page": "projects/js-minis.html"
+  },
+  {
+    "id": "blockcraft",
+    "title": "BlockCraft \u2014 3D Voxel Sandbox",
+    "role": "Game Developer \u00b7 JavaScript / Three.js",
+    "year": "2026",
+    "tags": [
+      "JavaScript",
+      "Three.js",
+      "3D",
+      "Voxel Game"
+    ],
+    "summary": "A playable Minecraft-inspired browser sandbox with terrain, mountains, trees, first-person movement, jumping and block placement/removal.",
+    "thumb": "img/blockcraft-preview.svg",
+    "hero": "img/blockcraft-preview.svg",
+    "media": [
+      "img/blockcraft-preview.svg"
+    ],
+    "links": {
+      "demo": "games/blockcraft/index.html",
+      "github": "",
+      "video": ""
+    },
+    "page": "games/blockcraft/index.html"
   }
 ]

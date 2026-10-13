@@ -18,6 +18,7 @@
    * Leave unavailable links empty.
    */
   const projectLinks = {
+    "blockcraft": { demo: "games/blockcraft/index.html", code: "", details: "games/blockcraft/index.html" },
     "cyber-runner": {
       demo: "",
       code: ""
