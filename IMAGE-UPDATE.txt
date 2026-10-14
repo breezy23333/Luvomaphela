@@ -1,0 +1,5 @@
+IMAGE UPDATE
+99 Fashion: three genuine frames extracted at 12, 28 and 45 seconds from the supplied video. Hero and gallery now use JPG frames. Corrected the video filename so its links work.
+Restored homepage links to the six projects in data/projects.json, including Weather/JS Minis, Tradebot and 99 Fashion. Added the missing projects.css stylesheet.
+Still needed: real screenshots for Game Awaits, OMINEX, Tradebot, JS Minis/Weather, Motion Reel, Cyber Runner, Fantasy RPG and Space Combat; homepage screenshots of Cinryvan and Lexryspell; an in-game BlockCraft screenshot. Existing placeholders are retained where no original image was supplied.
+Extract the ZIP and open portfolio/index.html. For browser game functionality use a local server, such as VS Code Live Server.

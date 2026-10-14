@@ -2337,3 +2337,47 @@ textarea::placeholder {
 .blockcraft-direct-link { display:inline-flex; margin-top:16px; color:#b8f2ab; font-weight:700; text-decoration:none; border-bottom:1px solid currentColor; }
 .blockcraft-direct-link:hover { color:#fff; }
 .blockcraft-card:focus-within { outline:2px solid #b8f2ab; outline-offset:3px; }
+
+/* Actual 99 Fashion source frame: preserve the portrait composition. */
+.restored-project > img {display:block;width:100%;height:340px;object-fit:contain;background:#080a0d;}
+.restored-project .project-content p {margin:12px 0;line-height:1.6;}
+
+.website-visual.website-screenshot {
+  display: block;
+  padding: 0;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+  background: #080b10;
+}
+
+.website-visual.website-screenshot::before,
+.website-visual.website-screenshot::after {
+  display: none;
+}
+
+.website-screenshot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.website-visual.website-screenshot {
+  display: block;
+  padding: 0;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+  background: #080b10;
+}
+
+.website-visual.website-screenshot::before,
+.website-visual.website-screenshot::after {
+  display: none;
+}
+
+.website-screenshot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

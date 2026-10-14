@@ -108,11 +108,11 @@
       "Animation"
     ],
     "summary": "Concept lookbook with animated garments, neon lights, and shop display sequence.",
-    "thumb": "img/99-thumb.svg",
-    "hero": "img/99-hero.svg",
+    "thumb": "img/99-hero.jpg",
+    "hero": "img/99-hero.jpg",
     "media": [
-      "img/99-1.svg",
-      "img/99-2.svg"
+      "img/99-1.jpg",
+      "img/99-2.jpg"
     ],
     "links": {
       "video": "videos/99-lookbook.mp4"
