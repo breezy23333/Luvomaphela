@@ -14,11 +14,14 @@
   );
 
   /*
-   * Add your real project URLs below.
-   * Leave unavailable links empty.
+   * Keep unavailable links empty.
+   * Add real demo, repository or asset URLs when available.
    */
   const projectLinks = {
-    "blockcraft": { demo: "games/blockcraft/index.html", code: "", details: "games/blockcraft/index.html" },
+    blockcraft: {
+      demo: "games/blockcraft/index.html",
+      code: ""
+    },
     "cyber-runner": {
       demo: "",
       code: ""
@@ -37,10 +40,14 @@
     }
   };
 
-  /* Your existing showcase projects. */
+  /*
+   * Additional existing Showcase work.
+   * The ten cards already in index.html remain in place.
+   * RPG Interface and Space Combat are not duplicated here.
+   */
   const showcaseItems = [
     {
-      id: 1,
+      id: "neon-city-chase",
       title: "Neon City Chase",
       category: "Games",
       type: "Game Demo",
@@ -52,7 +59,7 @@
       code: ""
     },
     {
-      id: 2,
+      id: "dragon-flight",
       title: "Dragon Flight Animation",
       category: "Animations",
       type: "3D Animation",
@@ -64,7 +71,7 @@
       code: ""
     },
     {
-      id: 3,
+      id: "game-launch-trailer",
       title: "Game Launch Trailer",
       category: "Videos",
       type: "Video Edit",
@@ -76,31 +83,7 @@
       code: ""
     },
     {
-      id: 4,
-      title: "RPG Interface Design",
-      category: "UI/UX",
-      type: "UI Design",
-      background: "linear-gradient(135deg, #37294e, #603247)",
-      description:
-        "An interface suite for a fantasy RPG with animated elements and intuitive navigation.",
-      tech: ["Figma", "Unity UI", "CSS"],
-      demo: "",
-      code: ""
-    },
-    {
-      id: 5,
-      title: "Space Combat Demo",
-      category: "Games",
-      type: "Gameplay",
-      background: "linear-gradient(135deg, #24264f, #1b4462)",
-      description:
-        "Space combat with procedural asteroid fields and AI-driven enemies.",
-      tech: ["Unreal Engine", "C++", "Blueprint"],
-      demo: "",
-      code: ""
-    },
-    {
-      id: 6,
+      id: "character-showcase",
       title: "Character Showcase",
       category: "Animations",
       type: "Animation Reel",
@@ -115,19 +98,34 @@
 
   function element(tag, className, text) {
     const node = document.createElement(tag);
+
     if (className) node.className = className;
     if (text !== undefined) node.textContent = text;
+
     return node;
   }
 
   function safeURL(value) {
-    if (!value || !value.trim()) return null;
+    if (typeof value !== "string" || !value.trim()) {
+      return null;
+    }
 
     try {
       const url = new URL(value, document.baseURI);
-      return ["https:", "http:"].includes(url.protocol)
-        ? url.href
-        : null;
+
+      if (["https:", "http:"].includes(url.protocol)) {
+        return url.href;
+      }
+
+      // Allow relative project links during local file previews.
+      if (
+        window.location.protocol === "file:" &&
+        url.protocol === "file:"
+      ) {
+        return url.href;
+      }
+
+      return null;
     } catch {
       return null;
     }
@@ -143,6 +141,8 @@
 
     window.open(url, "_blank", "noopener,noreferrer");
   }
+
+  /* NOTIFICATIONS */
 
   let toastTimer;
   let toastHideTimer;
@@ -160,8 +160,6 @@
     if (heading) heading.textContent = title;
     if (description) description.textContent = message;
 
-    toast.setAttribute("role", "status");
-    toast.setAttribute("aria-live", "polite");
     toast.classList.remove("hidden");
     toast.classList.add("show");
 
@@ -174,13 +172,12 @@
     }, 6500);
   }
 
-  /* 1. INTRO */
+  /* INTRO */
 
   function initIntro() {
     const intro = $("#intro");
     if (!intro) return;
 
-    const skip = $("#skipIntro");
     const storageKey = "luvo-portfolio-intro";
     let seen = false;
     let timer;
@@ -188,15 +185,17 @@
     try {
       seen = sessionStorage.getItem(storageKey) === "seen";
     } catch {
-      // The page still works when browser storage is unavailable.
+      // Storage is optional.
     }
 
     function closeIntro() {
       clearTimeout(timer);
 
       const hadFocus = intro.contains(document.activeElement);
+
       intro.classList.add("intro-hide");
       intro.hidden = true;
+      intro.style.display = "none";
 
       try {
         sessionStorage.setItem(storageKey, "seen");
@@ -207,7 +206,7 @@
       if (hadFocus) $(".nav-logo")?.focus();
     }
 
-    skip?.addEventListener("click", closeIntro);
+    $("#skipIntro")?.addEventListener("click", closeIntro);
 
     if (seen || reducedMotion.matches) {
       closeIntro();
@@ -216,29 +215,18 @@
     }
   }
 
-  /* 2. MOBILE MENU & ACTIVE NAVIGATION */
+  /* MOBILE MENU AND ACTIVE NAVIGATION */
 
   function initNavigation() {
-    let toggle = $(".mobile-menu-btn");
+    const toggle = $(".mobile-menu-btn");
     const menu = $(".mobile-menu");
     const mobile = window.matchMedia("(max-width: 800px)");
-
-    /*
-     * The supplied HTML uses a div for the menu control.
-     * Replace it with a real keyboard-accessible button.
-     */
-    if (toggle && toggle.tagName !== "BUTTON") {
-      const button = element("button", toggle.className);
-      button.type = "button";
-      button.append(...toggle.childNodes);
-      toggle.replaceWith(button);
-      toggle = button;
-    }
 
     function setMenu(open, returnFocus = false) {
       if (!toggle || !menu) return;
 
       const isOpen = open && mobile.matches;
+
       toggle.classList.toggle("active", isOpen);
       toggle.setAttribute("aria-expanded", String(isOpen));
       toggle.setAttribute(
@@ -249,11 +237,13 @@
       menu.classList.toggle("active", isOpen);
       menu.hidden = !isOpen;
 
-      if (returnFocus && mobile.matches) toggle.focus();
+      if (returnFocus && mobile.matches) {
+        toggle.focus();
+      }
     }
 
     if (toggle && menu) {
-      menu.id ||= "mobileNavigation";
+      menu.id ||= "mobileMenu";
       toggle.setAttribute("aria-controls", menu.id);
       setMenu(false);
 
@@ -267,8 +257,11 @@
 
         setMenu(false);
 
-        const id = link.getAttribute("href")?.slice(1);
-        const section = id ? document.getElementById(id) : null;
+        const href = link.getAttribute("href");
+
+        if (!href?.startsWith("#")) return;
+
+        const section = document.getElementById(href.slice(1));
 
         if (section) {
           section.setAttribute("tabindex", "-1");
@@ -305,13 +298,10 @@
       });
     }
 
-    /*
-     * Allow normal anchor navigation.
-     * Only intercept empty placeholder links.
-     */
     $$('a[href="#"]').forEach(link => {
       link.addEventListener("click", event => {
         event.preventDefault();
+
         notify(
           `${link.textContent.trim()} has not been linked yet.`,
           "Link unavailable"
@@ -320,6 +310,7 @@
     });
 
     const links = $$(".nav-link, .mobile-link");
+
     const sections = $$("section[id]").filter(section =>
       links.some(link => link.hash === `#${section.id}`)
     );
@@ -330,8 +321,11 @@
       queued = false;
       let active = sections[0];
 
+      const offset =
+        ($(".navbar")?.getBoundingClientRect().height || 100) + 30;
+
       for (const section of sections) {
-        if (section.getBoundingClientRect().top <= 150) {
+        if (section.getBoundingClientRect().top <= offset) {
           active = section;
         }
       }
@@ -340,6 +334,7 @@
 
       links.forEach(link => {
         const selected = link.hash === `#${active.id}`;
+
         link.classList.toggle("active", selected);
 
         if (selected) {
@@ -350,20 +345,20 @@
       });
     }
 
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (queued) return;
-        queued = true;
-        requestAnimationFrame(updateActiveLink);
-      },
-      { passive: true }
-    );
+    function queueUpdate() {
+      if (queued) return;
+
+      queued = true;
+      requestAnimationFrame(updateActiveLink);
+    }
+
+    window.addEventListener("scroll", queueUpdate, { passive: true });
+    window.addEventListener("resize", queueUpdate);
 
     updateActiveLink();
   }
 
-  /* 3. ACCESSIBLE PROJECT MODAL */
+  /* ACCESSIBLE PROJECT MODAL */
 
   function initModal() {
     const modal = $("#projectModal");
@@ -378,10 +373,8 @@
       };
     }
 
-    modal.setAttribute("role", "dialog");
-    modal.setAttribute("aria-modal", "true");
     modal.setAttribute("aria-labelledby", "projectDialogTitle");
-    closeButton.setAttribute("aria-label", "Close project details");
+    modal.removeAttribute("aria-label");
 
     let previousFocus = null;
     let backgroundState = [];
@@ -399,25 +392,36 @@
 
       backgroundState = [];
 
-      if (previousFocus?.isConnected) previousFocus.focus();
+      if (previousFocus?.isConnected) {
+        previousFocus.focus();
+      }
     }
 
     function open(item) {
+      if (!modal.classList.contains("hidden")) {
+        close();
+      }
+
       previousFocus = document.activeElement;
 
-      const category = element("p", "project-category", item.category);
+      const category = element(
+        "p",
+        "project-category",
+        item.category || "Showcase"
+      );
+
       const title = element("h2", "section-title", item.title);
       title.id = "projectDialogTitle";
 
       const description = element(
         "p",
         "project-description",
-        item.description
+        item.description || ""
       );
 
       const tags = element("div", "tech-stack");
 
-      item.tech.forEach(tech => {
+      (item.tech || []).forEach(tech => {
         tags.append(element("span", "tech-tag", tech));
       });
 
@@ -432,9 +436,11 @@
         if (!url) return;
 
         const link = element("a", "btn btn-primary", label);
+
         link.href = url;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
+
         actions.append(link);
       });
 
@@ -501,29 +507,39 @@
     return { open, close };
   }
 
-  /* 4. SHOWCASE & CATEGORY FILTERS */
+  /* SHOWCASE — PRESERVE HTML CARDS AND ADD UNIQUE EXISTING WORK */
 
   function initShowcase(dialog) {
     const grid = $("#showcaseGrid");
     if (!grid) return;
 
-    const fragment = document.createDocumentFragment();
-    const cards = [];
+    const existingTitles = new Set(
+      $$("h3", grid).map(title =>
+        title.textContent.trim().replace(/\s+/g, " ").toLowerCase()
+      )
+    );
 
     showcaseItems.forEach(item => {
+      const titleKey = item.title.toLowerCase();
+
+      if (existingTitles.has(titleKey)) return;
+
       const card = element("article", "showcase-item");
       card.dataset.category = item.category;
+      card.dataset.showcaseId = item.id;
 
       const thumbnail = element("div", "item-thumbnail");
       thumbnail.style.background = item.background;
 
       const overlay = element("div", "play-overlay");
       const preview = element("button", "play-button", "↗");
+
       preview.type = "button";
       preview.setAttribute("aria-label", `View ${item.title}`);
       preview.addEventListener("click", () => dialog.open(item));
 
       overlay.append(preview);
+
       thumbnail.append(
         overlay,
         element("span", "category-badge", item.type)
@@ -554,17 +570,32 @@
       );
 
       card.append(thumbnail, content);
-      cards.push(card);
-      fragment.append(card);
+      grid.append(card);
+      existingTitles.add(titleKey);
     });
 
-    grid.replaceChildren(fragment);
+    const cards = [...grid.children].filter(card =>
+      card.matches(".project-card, .showcase-item")
+    );
 
-    const filters = $$(".filter-btn");
+    const filters = $$("#showcase .filter-btn");
+
+    // Existing CSS must not override hidden filtered cards.
+    if (!$("#showcase-filter-visibility")) {
+      const style = element("style");
+      style.id = "showcase-filter-visibility";
+      style.textContent = `
+        #showcaseGrid > [hidden] {
+          display: none !important;
+        }
+      `;
+      document.head.append(style);
+    }
 
     function applyFilter(category) {
       filters.forEach(button => {
         const active = button.dataset.category === category;
+
         button.classList.toggle("active", active);
         button.setAttribute("aria-pressed", String(active));
       });
@@ -578,30 +609,34 @@
 
     filters.forEach(button => {
       button.type = "button";
+
       button.addEventListener("click", () => {
-        applyFilter(button.dataset.category);
+        applyFilter(button.dataset.category || "All");
       });
     });
 
     applyFilter("All");
 
-    /*
-     * Replace the old hard-coded download/rating counters
-     * with counts derived from the actual showcase entries.
-     */
-    const stats = $$(".stats-grid .stat-item");
-
+    // Update counters if a stats section is present.
     const totals = [
-      [showcaseItems.length, "Showcase projects"],
-      [new Set(showcaseItems.map(item => item.category)).size, "Categories"],
+      [cards.length, "Showcase projects"],
       [
-        new Set(showcaseItems.flatMap(item => item.tech)).size,
+        new Set(cards.map(card => card.dataset.category)).size,
+        "Categories"
+      ],
+      [
+        new Set(
+          $$(".tag, .tech-tag", grid).map(tag =>
+            tag.textContent.trim()
+          )
+        ).size,
         "Tools & technologies"
       ]
     ];
 
-    stats.forEach((stat, index) => {
+    $$("#showcase .stats-grid .stat-item").forEach((stat, index) => {
       if (!totals[index]) return;
+
       const number = $(".stat-number", stat);
       const label = $(".stat-label", stat);
 
@@ -610,24 +645,25 @@
     });
   }
 
-  /* 5. EXISTING GAME PROJECT BUTTONS */
+  /* GAME BUTTONS AND FEATURED DEMO */
 
   function initProjectButtons(dialog) {
-    $$(".project-card[data-project]").forEach(card => {
-      const key = card.dataset.project;
-      const links = projectLinks[key] || {};
+    $$("#showcase .project-card[data-project]").forEach(card => {
+      const links = projectLinks[card.dataset.project] || {};
 
       const item = {
-        title: $(".project-title", card)?.textContent.trim() || "Project",
+        title:
+          $(".project-title", card)?.textContent.trim() || "Project",
         category:
-          $(".project-category", card)?.textContent.trim() || "Project",
+          $(".project-category", card)?.textContent.trim() || "Showcase",
         description:
           $(".project-description", card)?.textContent.trim() || "",
         tech: $$(".tag", card).map(tag => tag.textContent.trim()),
         ...links
       };
 
-      $$(".btn", card).forEach(button => {
+      // Only handle buttons. Keep existing project links working normally.
+      $$("button.btn", card).forEach(button => {
         button.type = "button";
 
         button.addEventListener("click", () => {
@@ -650,18 +686,27 @@
       openProjectLink(projectLinks.featured.demo, "Featured demo");
     });
 
-    $(".featured-buttons .btn-outline")?.addEventListener("click", () => {
-      openProjectLink(projectLinks.featured.code, "Featured repository");
-    });
+    $("#showcase .featured-section .btn-outline")
+      ?.addEventListener("click", () => {
+        openProjectLink(
+          projectLinks.featured.code,
+          "Featured repository"
+        );
+      });
 
-    const oldPlay = $(".demo-content .play-button");
+    const oldPlay = $("#showcase .demo-content .play-button");
 
     if (oldPlay) {
-      const button = element("button", "play-button");
+      let button = oldPlay;
+
+      if (oldPlay.tagName !== "BUTTON") {
+        button = element("button", oldPlay.className);
+        button.append(...oldPlay.childNodes);
+        oldPlay.replaceWith(button);
+      }
+
       button.type = "button";
       button.setAttribute("aria-label", "Open featured demo");
-      button.append(...oldPlay.childNodes);
-      oldPlay.replaceWith(button);
 
       button.addEventListener("click", () => {
         openProjectLink(projectLinks.featured.demo, "Featured demo");
@@ -669,7 +714,7 @@
     }
   }
 
-  /* 6. CONTACT FORM */
+  /* CONTACT FORM */
 
   function initContactForm() {
     const form = $("#contactForm");
@@ -694,11 +739,11 @@
       if (field.name === "email") field.autocomplete = "email";
 
       field.addEventListener("focus", () => {
-        field.parentElement.classList.add("focused");
+        field.parentElement?.classList.add("focused");
       });
 
       field.addEventListener("blur", () => {
-        field.parentElement.classList.remove("focused");
+        field.parentElement?.classList.remove("focused");
       });
 
       field.addEventListener("input", () => {
@@ -711,25 +756,34 @@
     const submit = $(".submit-btn", form);
 
     if (submit) {
-      submit.replaceChildren(document.createTextNode("Create email draft ↗"));
+      submit.replaceChildren(
+        document.createTextNode("Create email draft ↗")
+      );
     }
 
-    const note = element(
-      "p",
-      "contact-desc",
-      "Opens your email app with a draft. Review it and press Send there."
+    form.append(
+      element(
+        "p",
+        "contact-desc",
+        "Opens your email app with a draft. Review it and press Send there."
+      )
     );
-
-    form.append(note);
 
     form.addEventListener("submit", event => {
       event.preventDefault();
 
       fields.forEach(field => {
         const blank = field.required && !field.value.trim();
-        field.setCustomValidity(blank ? "Please complete this field." : "");
+
+        field.setCustomValidity(
+          blank ? "Please complete this field." : ""
+        );
+
         field.classList.toggle("error", !field.validity.valid);
-        field.setAttribute("aria-invalid", String(!field.validity.valid));
+        field.setAttribute(
+          "aria-invalid",
+          String(!field.validity.valid)
+        );
       });
 
       if (!form.reportValidity()) return;
@@ -754,26 +808,9 @@
 
       window.location.href = mailto;
     });
-
-    $$(".contact-value").forEach(value => {
-      const text = value.textContent.trim();
-      let href = "";
-
-      if (text === "luvomaphela0@gmail.com") {
-        href = `mailto:${text}`;
-      } else if (text.startsWith("+27")) {
-        href = `tel:${text.replace(/[^\d+]/g, "")}`;
-      }
-
-      if (!href) return;
-
-      const link = element("a", "", text);
-      link.href = href;
-      value.replaceChildren(link);
-    });
   }
 
-  /* 7. OMINEX — LOCAL COMMAND DEMO */
+  /* OMINEX — LOCAL PORTFOLIO GUIDE */
 
   function initOminex() {
     const input = $("#ominexInput");
@@ -791,7 +828,10 @@
     screen.setAttribute("aria-relevant", "additions");
 
     const heading = $(".ominex-header h3");
-    if (heading) heading.textContent = "OMINEX — Interactive Portfolio Guide";
+
+    if (heading) {
+      heading.textContent = "OMINEX — Interactive Portfolio Guide";
+    }
 
     function addMessage(text, type = "ai") {
       screen.append(element("div", `msg ${type}`, text));
@@ -803,10 +843,47 @@
       screen.scrollTop = screen.scrollHeight;
     }
 
+    const responses = new Map([
+      [
+        "run it",
+        "OMINEX activated. Explore Luvo’s projects, games, animation and video work."
+      ],
+      [
+        "help",
+        "Commands: run it, projects, showcase, videos, skills, contact, clear."
+      ],
+      [
+        "projects",
+        "Featured Projects contains Cinryvan and Lexryspell. Use their project links to explore each platform."
+      ],
+      [
+        "websites",
+        "Cinryvan and Lexryspell are in Featured Projects."
+      ],
+      [
+        "showcase",
+        "Showcase contains BlockCraft, Cyber Runner, Fantasy RPG Interface, Space Combat VR, Game Awaits, OMINEX, Trade Bot, Motion Graphics, 99 Fashion, JavaScript Minis and other creative work. Use the category filters to browse."
+      ],
+      [
+        "videos",
+        "Visit the Movie thinkers section to watch the three linked YouTube videos."
+      ],
+      [
+        "skills",
+        "Luvo works across game development, web development, graphic and UI design, video editing and 3D animation."
+      ],
+      [
+        "contact",
+        "Email luvomaphela0@gmail.com or use the contact form to create an email draft."
+      ],
+      ["hello", 'Hello! Type "help" to see the available commands.'],
+      ["hi", 'Hi! Type "help" to explore the portfolio.']
+    ]);
+
     screen.replaceChildren();
 
     addMessage(
-      'Welcome to OMINEX, a local command demo. Try "run it", "projects", "websites", "videos", "contact" or "help".'
+      'Welcome to OMINEX, a local command demo. Try "projects", "showcase", "videos", "contact" or "help".'
     );
 
     function run() {
@@ -814,7 +891,11 @@
       if (!text) return;
 
       input.value = "";
-      const command = text.toLowerCase().replace(/[.!?]+$/, "");
+
+      const command = text
+        .toLowerCase()
+        .replace(/[.!?]+$/, "")
+        .trim();
 
       if (command === "clear") {
         screen.replaceChildren();
@@ -824,30 +905,9 @@
 
       addMessage(text, "user");
 
-      const responses = {
-        "run it":
-          "OMINEX activated. Explore Luvo’s games, websites, animation and video work.",
-        help:
-          "Commands: run it, projects, websites, videos, skills, contact, clear.",
-        projects:
-          "The Featured Projects section includes Cyber Runner, Fantasy RPG Interface and Space Combat VR.",
-        websites:
-          "Explore Cinryvan for entertainment discovery and Lexryspell for word discovery. Both links are in My Websites.",
-        videos:
-          "Visit the Movie thinkers section to watch the three linked YouTube videos.",
-        skills:
-          "Luvo works across game development, web development, graphic and UI design, video editing and 3D animation.",
-        contact:
-          "Email luvomaphela0@gmail.com or use the contact form to create an email draft.",
-        hello:
-          'Hello! Type "help" to see the available commands.',
-        hi:
-          'Hi! Type "help" to explore the portfolio.'
-      };
-
       addMessage(
-        responses[command] ||
-        'This is a local command demo, so I only recognise the listed commands. Type "help" to see them.'
+        responses.get(command) ||
+        'This is a local command demo. Type "help" to see the available commands.'
       );
     }
 
@@ -861,10 +921,16 @@
     });
   }
 
-  /* 8. SCROLL REVEALS */
+  /* SCROLL REVEALS */
 
   function initReveals() {
+    const nodes = $$(
+      ".skill-card, .project-card, .showcase-item, " +
+      ".website-card, .youtube-card, .achievement"
+    );
+
     if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+      nodes.forEach(node => node.classList.add("animate-in"));
       return;
     }
 
@@ -880,13 +946,17 @@
       { threshold: 0.08 }
     );
 
-    $$(
-      ".skill-card, .project-card, .showcase-item, " +
-      ".website-card, .youtube-card, .achievement"
-    ).forEach(node => observer.observe(node));
+    nodes.forEach(node => observer.observe(node));
+
+    reducedMotion.addEventListener("change", () => {
+      if (!reducedMotion.matches) return;
+
+      observer.disconnect();
+      nodes.forEach(node => node.classList.add("animate-in"));
+    });
   }
 
-  /* 9. LIGHTWEIGHT ENERGY BACKGROUND */
+  /* LIGHTWEIGHT ENERGY BACKGROUND */
 
   function initEnergy() {
     const canvas = $("#energy-canvas");
@@ -901,15 +971,19 @@
     let frame = 0;
     let previousTime = 0;
     let visible = true;
+    let resizeTimer;
 
     function resize() {
       const rect = canvas.getBoundingClientRect();
+
       width = rect.width;
       height = rect.height;
 
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
+
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
+
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
       const count = window.innerWidth < 600 ? 22 : 48;
@@ -926,13 +1000,22 @@
     function draw(time) {
       frame = 0;
 
-      if (document.hidden || reducedMotion.matches || !visible) return;
+      if (
+        document.hidden ||
+        reducedMotion.matches ||
+        !visible ||
+        !width ||
+        !height
+      ) {
+        return;
+      }
 
       const delta = previousTime
         ? Math.min((time - previousTime) / 1000, 0.05)
         : 0;
 
       previousTime = time;
+
       context.clearRect(0, 0, width, height);
 
       particles.forEach(particle => {
@@ -971,8 +1054,6 @@
       }
     }
 
-    let resizeTimer;
-
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
 
@@ -1002,7 +1083,7 @@
     sync();
   }
 
-  /* 10. IMAGE FALLBACKS */
+  /* IMAGE FALLBACKS */
 
   function initImages() {
     $$("img").forEach(image => {
@@ -1010,14 +1091,26 @@
 
       function handleError() {
         if (image.dataset.fallbackHandled) return;
+
         image.dataset.fallbackHandled = "true";
 
         const container = image.parentElement;
+        if (!container) return;
+
+        if (getComputedStyle(container).position === "static") {
+          container.style.position = "relative";
+        }
+
+        if (container.getBoundingClientRect().height < 80) {
+          container.style.minHeight = "180px";
+        }
+
         image.hidden = true;
+        image.style.display = "none";
 
         const fallback = element(
           "span",
-          "",
+          "image-fallback",
           image.alt || "Preview unavailable"
         );
 
@@ -1026,7 +1119,7 @@
           "place-items:center;padding:24px;text-align:center;" +
           "color:#cbd3df;font-size:13px;pointer-events:none;";
 
-        container?.append(fallback);
+        container.append(fallback);
       }
 
       image.addEventListener("error", handleError, { once: true });
@@ -1041,12 +1134,12 @@
 
   function init() {
     initIntro();
-    initNavigation();
 
     const dialog = initModal();
 
     initShowcase(dialog);
     initProjectButtons(dialog);
+    initNavigation();
     initContactForm();
     initOminex();
     initImages();
@@ -1054,7 +1147,10 @@
     initEnergy();
 
     const year = $("#currentYear");
-    if (year) year.textContent = String(new Date().getFullYear());
+
+    if (year) {
+      year.textContent = String(new Date().getFullYear());
+    }
   }
 
   if (document.readyState === "loading") {
