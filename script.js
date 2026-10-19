@@ -31,7 +31,7 @@
       assets: ""
     },
     "space-combat": {
-      demo: "",
+      demo: "games/star-runner/index.html",
       code: ""
     },
     featured: {

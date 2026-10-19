@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#060b14">
+  <meta name="description" content="Star Runner — a playable 3D asteroid survival game built with Three.js.">
+  <title>Star Runner — 3D Space Survival</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="game" aria-label="3D space game"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <header class="hud">
+    <a class="back-link" href="../../index.html#showcase" aria-label="Back to portfolio">← Portfolio</a>
+    <div class="brand"><span class="brand-dot"></span><span>STAR <strong>RUNNER</strong></span><small>SPACE SURVIVAL</small></div>
+    <button id="pauseButton" class="hud-button" type="button" aria-label="Pause or resume game">Pause <span class="keycap">P</span></button>
+  </header>
+  <div class="stats" aria-live="off">
+    <div class="stat"><span>SCORE</span><strong id="score">00000</strong></div>
+    <div class="stat"><span>BEST</span><strong id="best">00000</strong></div>
+    <div class="stat"><span>SHIELDS</span><strong id="shields">♥ ♥ ♥</strong></div>
+    <div class="stat speed"><span>SPEED</span><strong id="speed">1.0×</strong></div>
+  </div>
+  <div class="bottom-hint">MOVE <kbd>A</kbd> <kbd>D</kbd> / <kbd>←</kbd> <kbd>→</kbd> <span>·</span> SHOOT <kbd>SPACE</kbd> <span>·</span> PAUSE <kbd>P</kbd></div>
+  <div class="mobile-controls" aria-label="Touch controls">
+    <button id="leftButton" type="button" aria-label="Move left">◀</button>
+    <button id="fireButton" type="button" class="fire" aria-label="Fire laser">FIRE</button>
+    <button id="rightButton" type="button" aria-label="Move right">▶</button>
+  </div>
+  <div id="screen" class="overlay">
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+      <div class="eyebrow">A THREE.JS BROWSER GAME</div>
+      <div class="emblem">✦</div>
+      <h1 id="overlayTitle">STAR <em>RUNNER</em></h1>
+      <p id="overlayMessage">Pilot through the asteroid field. Dodge incoming rocks, fire lasers and survive as long as you can.</p>
+      <div class="instructions"><div><b>A / D or ← / →</b><span>Steer the ship</span></div><div><b>SPACE</b><span>Fire lasers</span></div><div><b>P</b><span>Pause</span></div></div>
+      <button id="startButton" type="button" class="start-button">LAUNCH MISSION <span>↗</span></button>
+      <p class="fineprint">Works on desktop and mobile · No installation required</p>
+    </section>
+  </div>
+  <div id="message" class="game-message" aria-live="polite"></div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
