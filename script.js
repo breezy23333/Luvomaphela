@@ -51,7 +51,7 @@
       title: "Neon City Chase",
       category: "Games",
       type: "Game Demo",
-      background: "linear-gradient(135deg, #143a40, #34315d)",
+      background: "url('img/neon-city-chase.png') center / cover no-repeat",
       description:
         "High-speed racing game through a cyberpunk cityscape with dynamic lighting and particle effects.",
       tech: ["Unity", "C#", "Shader Graph"],
@@ -63,7 +63,7 @@
       title: "Dragon Flight Animation",
       category: "Animations",
       type: "3D Animation",
-      background: "linear-gradient(135deg, #562632, #6a4323)",
+      background: "url('img/dragon-flight.png') center / cover no-repeat",
       description:
         "Cinematic dragon flight sequence with particle systems and fire effects.",
       tech: ["Blender", "Maya", "Houdini"],
@@ -75,7 +75,7 @@
       title: "Game Launch Trailer",
       category: "Videos",
       type: "Video Edit",
-      background: "linear-gradient(135deg, #214454, #16493e)",
+      background: "url('img/game-launch-trailer.png') center / cover no-repeat",
       description:
         "A trailer showcasing game features through editing and sound design.",
       tech: ["Premiere Pro", "After Effects", "DaVinci"],
@@ -87,7 +87,7 @@
       title: "Character Showcase",
       category: "Animations",
       type: "Animation Reel",
-      background: "linear-gradient(135deg, #16493e, #214454)",
+      background: "url('img/character-showcase.png') center / cover no-repeat",
       description:
         "A character animation reel featuring rigging and motion capture.",
       tech: ["Maya", "MotionBuilder", "Zbrush"],
