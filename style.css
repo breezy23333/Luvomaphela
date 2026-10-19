@@ -3285,3 +3285,75 @@ textarea::placeholder {
     scroll-behavior: auto !important;
   }
 }
+
+/* Give OMINEX answers more room */
+
+#ominex .ominex-main {
+  min-height: 0;
+}
+
+#ominex .ominex-screen {
+  flex: 1 1 400px;
+  min-height: 350px;
+  max-height: 600px;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+#ominex .msg {
+  max-width: 96%;
+}
+
+/* Compact introduction once a conversation starts */
+#ominex.has-conversation .ominex-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 24px 18px;
+}
+
+#ominex.has-conversation .ominex-orb {
+  flex: 0 0 74px;
+  width: 74px;
+  height: 74px;
+  margin: 0;
+}
+
+#ominex.has-conversation .ominex-orb-ring {
+  inset: 10px;
+}
+
+#ominex.has-conversation .ominex-orb-core {
+  inset: 15px;
+}
+
+#ominex.has-conversation .ominex-welcome h3 {
+  font-size: 23px;
+}
+
+#ominex.has-conversation .ominex-eyebrow,
+#ominex.has-conversation .ominex-intro,
+#ominex.has-conversation .ominex-suggestions {
+  display: none;
+}
+
+#ominex .ominex-composer-area {
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  #ominex .ominex-screen {
+    min-height: 320px;
+    max-height: 65vh;
+    font-size: 14px;
+  }
+
+  #ominex.has-conversation .ominex-welcome {
+    padding: 10px 15px;
+  }
+
+  #ominex.has-conversation .ominex-welcome h3 {
+    font-size: 21px;
+  }
+}

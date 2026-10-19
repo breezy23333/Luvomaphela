@@ -977,11 +977,14 @@
 
       input.value = "";
       addMessage(text, "user");
+      root?.classList.remove("has-conversation");
+      stopVoice();
 
       const local = localAnswers.get(command);
 
       if (local) {
         addMessage(local);
+        speakAnswer(local);
         send.disabled = false;
         screen.removeAttribute("aria-busy");
         return;
@@ -1074,6 +1077,9 @@
         );
 
         message.appendChild(attribution);
+        if (summary && !ambiguous) {
+          speakAnswer(summary);
+        }
 
         if (matches.length > 1) {
           const alternatives = document.createElement("div");
@@ -1133,15 +1139,208 @@
       });
     });
 
-    // Voice is not connected in this Wikipedia-only step.
-    ["ominexMic", "ominexVoiceMode"].forEach(id => {
-      const button = document.getElementById(id);
-      if (!button) return;
-      button.disabled = true;
-      button.title = "Voice controls are not connected yet.";
-    });
+        /* VOICE OUTPUT + MICROPHONE INPUT */
+
+    const voiceButton = document.getElementById("ominexVoiceMode");
+    const micButton = document.getElementById("ominexMic");
+    const voiceStatus = document.getElementById("ominexVoiceStatus");
+
+    const speech = window.speechSynthesis;
+    const Recognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    let voiceEnabled = false;
+    let recognition = null;
+    let listening = false;
+    let starting = false;
+    let speechVersion = 0;
+
+    function updateVoiceStatus() {
+      if (voiceStatus) {
+        voiceStatus.textContent =
+          listening ? "Listening…" :
+          root?.classList.contains("is-speaking") ? "Speaking…" :
+          voiceEnabled ? "On" : "Off";
+      }
+
+      voiceButton?.setAttribute(
+        "aria-pressed",
+        String(voiceEnabled)
+      );
+
+      micButton?.setAttribute(
+        "aria-label",
+        listening ? "Stop voice input" : "Start voice input"
+      );
+    }
+
+    function stopVoice() {
+      speechVersion += 1;
+      speech?.cancel();
+
+      if (recognition && (listening || starting)) {
+        recognition.abort();
+      }
+
+      listening = false;
+      starting = false;
+
+      root?.classList.remove("is-speaking", "is-listening");
+      updateVoiceStatus();
+    }
+
+    function speakAnswer(text) {
+      if (!voiceEnabled || !speech || !text) return;
+
+      stopVoice();
+
+      const version = speechVersion;
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = speech.getVoices();
+
+      utterance.voice =
+        voices.find(voice => voice.lang === "en-ZA") ||
+        voices.find(voice => voice.lang === "en-GB") ||
+        voices.find(voice => voice.lang.startsWith("en")) ||
+        null;
+
+      utterance.lang = utterance.voice?.lang || "en-GB";
+      utterance.rate = 0.95;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      utterance.onstart = () => {
+        if (version !== speechVersion) return;
+        root?.classList.add("is-speaking");
+        updateVoiceStatus();
+      };
+
+      const finish = () => {
+        if (version !== speechVersion) return;
+        root?.classList.remove("is-speaking");
+        updateVoiceStatus();
+      };
+
+      utterance.onend = finish;
+      utterance.onerror = finish;
+
+      speech.speak(utterance);
+    }
+
+    if (voiceButton) {
+      voiceButton.disabled = !speech;
+      voiceButton.title = speech
+        ? "Turn spoken answers on or off"
+        : "Spoken answers are unavailable in this browser.";
+
+      voiceButton.addEventListener("click", () => {
+        voiceEnabled = !voiceEnabled;
+        stopVoice();
+
+        if (voiceEnabled) {
+          const answers = [...screen.querySelectorAll(".msg.ai")];
+          const latest = answers.reverse().find(message =>
+            !message.hasAttribute("data-wiki-pending") &&
+            message.textContent !== "Previous lookup cancelled."
+          );
+
+          const text = latest?.textContent
+            .split("Source:")[0]
+            .trim();
+
+          speakAnswer(text || "Voice is on. Ask me a question.");
+        }
+
+        updateVoiceStatus();
+      });
+    }
+
+    if (micButton) {
+      micButton.disabled = !Recognition || !window.isSecureContext;
+      micButton.title = micButton.disabled
+        ? "Voice input needs a supported browser and HTTPS."
+        : "Speak your question";
+    }
+
+    if (Recognition && window.isSecureContext) {
+      recognition = new Recognition();
+      recognition.lang = "en-ZA";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+        starting = false;
+        listening = true;
+        root?.classList.add("is-listening");
+        updateVoiceStatus();
+        setHint("Listening… Speak your question.");
+      };
+
+      recognition.onresult = event => {
+        const transcript = event.results[0][0].transcript.trim();
+        if (!transcript) return;
+
+        input.value = transcript;
+        setHint("Question transcribed. Press Send when ready.");
+        input.focus();
+      };
+
+      recognition.onerror = event => {
+        const messages = {
+          "not-allowed":
+            "Microphone access was blocked. Allow it in your browser’s site settings.",
+          "audio-capture":
+            "No microphone was found. Check your microphone connection.",
+          "no-speech":
+            "No speech was detected. Click the microphone to try again.",
+          "network":
+            "Voice recognition could not connect. Please type your question."
+        };
+
+        if (event.error !== "aborted") {
+          setHint(
+            messages[event.error] ||
+            "Voice input failed. You can still type your question."
+          );
+        }
+      };
+
+      recognition.onend = () => {
+        starting = false;
+        listening = false;
+        root?.classList.remove("is-listening");
+        updateVoiceStatus();
+
+        if (hint?.textContent === "Listening… Speak your question.") {
+          setHint("Microphone stopped. Click it to try again.");
+        }
+      };
+
+      micButton?.addEventListener("click", () => {
+        if (listening || starting) {
+          stopVoice();
+          setHint("Microphone stopped.");
+          return;
+        }
+
+        stopVoice();
+
+        try {
+          starting = true;
+          recognition.start();
+        } catch {
+          starting = false;
+          setHint("Could not start the microphone. Please try again.");
+        }
+      });
+    }
+
+    window.addEventListener("pagehide", stopVoice);
+    updateVoiceStatus();0
 
     resetChat();
+    root?.classList.remove("has-conversation");
+      stopVoice();
   }
 
   /* SCROLL REVEALS */
