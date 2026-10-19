@@ -2381,3 +2381,907 @@ textarea::placeholder {
   width: 100%;
   height: auto;
 }
+
+/* OMINEX — redesigned portfolio assistant */
+
+#ominex {
+  --ox-accent: #c5f86b;
+  --ox-text: #f2f4ef;
+  --ox-muted: #9ca69f;
+  --ox-border: rgba(255, 255, 255, 0.09);
+
+  width: min(1440px, calc(100% - 64px));
+  margin: 80px auto 0;
+  scroll-margin-top: 110px;
+  color: var(--ox-text);
+  font-family: "Inter", sans-serif;
+}
+
+#ominex *,
+#ominex *::before,
+#ominex *::after {
+  box-sizing: border-box;
+}
+
+#ominex button,
+#ominex input,
+#ominex a {
+  font: inherit;
+}
+
+#ominex button,
+#ominex a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#ominex button {
+  cursor: pointer;
+}
+
+#ominex a {
+  text-decoration: none;
+}
+
+#ominex button:focus-visible,
+#ominex a:focus-visible,
+#ominex input:focus-visible {
+  outline: 2px solid var(--ox-accent);
+  outline-offset: 4px;
+}
+
+#ominex .ominex-app {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 270px;
+  min-height: 760px;
+  overflow: hidden;
+  border: 1px solid var(--ox-border);
+  border-radius: 26px;
+  background: #0d1112;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+}
+
+/* Sidebar */
+
+#ominex .ominex-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 32px 20px 24px;
+  border-right: 1px solid var(--ox-border);
+  background: #101516;
+}
+
+#ominex .ominex-brand {
+  display: block;
+  margin: 0 8px 34px;
+  color: var(--ox-text);
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+}
+
+#ominex .ominex-brand span {
+  display: block;
+  margin-top: 10px;
+  color: var(--ox-muted);
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 1.8;
+  letter-spacing: 0.12em;
+}
+
+#ominex .ominex-new-chat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid rgba(197, 248, 107, 0.28);
+  border-radius: 11px;
+  background: rgba(197, 248, 107, 0.08);
+  color: var(--ox-accent);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  transition: background 180ms ease;
+}
+
+#ominex .ominex-new-chat:hover {
+  background: rgba(197, 248, 107, 0.15);
+}
+
+#ominex .ominex-new-chat > span {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 6px;
+  background: var(--ox-accent);
+  color: #17200e;
+  font-size: 22px;
+  line-height: 1;
+}
+
+#ominex .ominex-navigation {
+  display: grid;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+#ominex .ominex-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #aeb8b2;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+  transition: color 180ms ease, background 180ms ease;
+}
+
+#ominex .ominex-nav-item > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 23px;
+  font-size: 21px;
+}
+
+#ominex .ominex-nav-item:hover,
+#ominex .ominex-nav-item.active,
+#ominex .ominex-nav-item[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--ox-accent);
+}
+
+#ominex .ominex-sidebar-bottom {
+  margin-top: auto;
+  padding-top: 30px;
+}
+
+#ominex .ominex-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ox-border);
+}
+
+#ominex .ominex-profile-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 35px;
+  height: 35px;
+  border-radius: 10px;
+  background: #253022;
+  color: var(--ox-accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+#ominex .ominex-profile strong,
+#ominex .ominex-profile div > span {
+  display: block;
+}
+
+#ominex .ominex-profile strong {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+#ominex .ominex-profile div > span {
+  margin-top: 5px;
+  color: var(--ox-muted);
+  font-size: 10px;
+}
+
+/* Main conversation */
+
+#ominex .ominex-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background:
+    radial-gradient(
+      ellipse at 50% 25%,
+      rgba(197, 248, 107, 0.035),
+      transparent 55%
+    ),
+    #0d1112;
+}
+
+#ominex .ominex-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 23px 28px;
+  color: var(--ox-muted);
+  font-size: 11px;
+}
+
+#ominex .ominex-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #c9d5c5;
+}
+
+#ominex .ominex-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ox-accent);
+  box-shadow: 0 0 12px rgba(197, 248, 107, 0.35);
+}
+
+#ominex .ominex-welcome {
+  padding: 10px 28px 22px;
+  text-align: center;
+}
+
+/* CSS visualizer */
+
+#ominex .ominex-orb {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  margin: 4px auto 25px;
+  isolation: isolate;
+}
+
+#ominex .ominex-orb-bars {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(197, 248, 107, 0.85) 0deg 1deg,
+    transparent 1deg 4deg
+  );
+  -webkit-mask-image: radial-gradient(
+    circle,
+    transparent 55%,
+    #000 56%,
+    #000 66%,
+    transparent 67%
+  );
+  mask-image: radial-gradient(
+    circle,
+    transparent 55%,
+    #000 56%,
+    #000 66%,
+    transparent 67%
+  );
+  animation: ominex-orbit 55s linear infinite;
+}
+
+#ominex .ominex-orb-ring {
+  position: absolute;
+  inset: 27px;
+  border: 1px solid rgba(197, 248, 107, 0.3);
+  border-radius: 50%;
+  box-shadow:
+    0 0 26px rgba(197, 248, 107, 0.07),
+    inset 0 0 22px rgba(197, 248, 107, 0.045);
+}
+
+#ominex .ominex-orb-core {
+  position: absolute;
+  inset: 38px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 25%,
+    #233321 0%,
+    #172219 38%,
+    #101613 74%
+  );
+  box-shadow: inset 0 0 28px rgba(197, 248, 107, 0.06);
+  animation: ominex-breathe 5s ease-in-out infinite;
+}
+
+#ominex .ominex-eyebrow {
+  margin: 0 0 10px;
+  color: var(--ox-accent);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+#ominex .ominex-welcome h3 {
+  margin: 0;
+  color: var(--ox-text);
+  font-size: clamp(25px, 2.6vw, 38px);
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+#ominex .ominex-intro {
+  max-width: 390px;
+  margin: 13px auto 0;
+  color: var(--ox-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#ominex .ominex-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 23px;
+}
+
+#ominex .ominex-suggestions button {
+  min-height: 36px;
+  padding: 9px 12px;
+  border: 1px solid var(--ox-border);
+  border-radius: 9px;
+  background: #151b1b;
+  color: #cbd2cc;
+  font-size: 10px;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+#ominex .ominex-suggestions button:hover {
+  border-color: rgba(197, 248, 107, 0.4);
+  color: var(--ox-accent);
+}
+
+/* Chat messages — overrides old terminal styling */
+
+#ominex .ominex-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 180px;
+  min-height: 150px;
+  height: auto;
+  max-height: 340px;
+  margin: 0;
+  padding: 18px 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #3c4b36 transparent;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+#ominex .msg {
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 90%;
+  margin: 0;
+  padding: 14px 17px;
+  border-radius: 16px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  text-align: left;
+}
+
+#ominex .msg.ai {
+  align-self: flex-start;
+  border: 1px solid var(--ox-border);
+  border-bottom-left-radius: 5px;
+  background: #1a2122;
+  color: #dce2dd;
+}
+
+#ominex .msg.user {
+  align-self: flex-end;
+  margin-left: auto;
+  border: 1px solid rgba(197, 248, 107, 0.12);
+  border-bottom-right-radius: 5px;
+  background: #203120;
+  color: #e1edcf;
+}
+
+#ominex .msg a {
+  color: var(--ox-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Message input */
+
+#ominex .ominex-composer-area {
+  margin-top: auto;
+  padding: 18px 24px 20px;
+}
+
+#ominex .ominex-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 32px;
+  background: #171d1e;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+#ominex .ominex-input:focus-within {
+  border-color: rgba(197, 248, 107, 0.5);
+  box-shadow: 0 0 0 3px rgba(197, 248, 107, 0.045);
+}
+
+#ominex .ominex-input input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 20px;
+  outline: none;
+  background: transparent;
+  color: var(--ox-text);
+  font-size: 13px;
+  box-shadow: none;
+}
+
+#ominex .ominex-input input::placeholder {
+  color: #87928b;
+}
+
+#ominex .ominex-input button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--ox-border);
+  border-radius: 50%;
+  background: transparent;
+  color: #cbd4cd;
+}
+
+#ominex .ominex-input button:hover {
+  background: #283128;
+  color: var(--ox-accent);
+}
+
+#ominex #ominexSend {
+  border: 0;
+  background: var(--ox-accent);
+  color: #16200d;
+}
+
+#ominex #ominexSend:hover {
+  background: #d8ff95;
+}
+
+#ominex .ominex-input button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+#ominex .ominex-input svg {
+  display: block;
+  pointer-events: none;
+}
+
+#ominex .ominex-composer-note {
+  margin: 10px 10px 0;
+  color: #8d9890;
+  font-size: 9px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Atmosphere panel */
+
+#ominex .ominex-mood-panel {
+  min-width: 0;
+  margin: 20px 20px 20px 0;
+  padding: 24px 22px;
+  border: 1px solid var(--ox-border);
+  border-radius: 20px;
+  background: linear-gradient(160deg, #181f1e, #111718);
+}
+
+#ominex .ominex-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+#ominex .ominex-panel-heading h4 {
+  margin: 0;
+  color: var(--ox-text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#ominex .ominex-panel-heading > span {
+  color: var(--ox-accent);
+  font-size: 11px;
+}
+
+#ominex .ominex-mood-visual {
+  position: relative;
+  width: min(100%, 182px);
+  aspect-ratio: 1;
+  margin: 35px auto 25px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(197, 248, 107, 0.55);
+  border-radius: 50%;
+  background: #19231c;
+}
+
+#ominex .ominex-wave {
+  position: absolute;
+  left: -35%;
+  width: 170%;
+  height: 170%;
+  border-radius: 43%;
+  transform-origin: center;
+}
+
+#ominex .ominex-wave-back {
+  top: 40%;
+  background: #496b38;
+  opacity: 0.6;
+  animation: ominex-orbit 19s linear infinite reverse;
+}
+
+#ominex .ominex-wave-front {
+  top: 51%;
+  background: linear-gradient(145deg, #d5fc8b, #85bd45 50%, #345728);
+  box-shadow: 0 -4px 20px rgba(197, 248, 107, 0.15);
+  animation: ominex-orbit 14s linear infinite;
+}
+
+#ominex .ominex-mood-caption {
+  text-align: center;
+}
+
+#ominex .ominex-mood-caption strong {
+  color: #dfebc9;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+#ominex .ominex-mood-caption p {
+  margin: 10px 0 0;
+  color: var(--ox-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+#ominex .ominex-panel-divider {
+  height: 1px;
+  margin: 27px 0;
+  background: var(--ox-border);
+}
+
+#ominex .ominex-capabilities {
+  display: grid;
+  gap: 23px;
+}
+
+#ominex .ominex-capabilities > div {
+  display: grid;
+  gap: 7px;
+}
+
+#ominex .ominex-capabilities span {
+  color: var(--ox-muted);
+  font-size: 10px;
+}
+
+#ominex .ominex-capabilities strong,
+#ominex .ominex-capabilities a {
+  color: #dce3d9;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+#ominex .ominex-capabilities a {
+  color: var(--ox-accent);
+}
+
+#ominex .ominex-voice-status {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+#ominex .ominex-voice-symbol {
+  color: #d7e0d4;
+  font-size: 30px;
+}
+
+#ominex .ominex-voice-status strong,
+#ominex .ominex-voice-status div > span {
+  display: block;
+}
+
+#ominex .ominex-voice-status strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+#ominex #ominexVoiceStatus {
+  margin-top: 6px;
+  color: var(--ox-accent);
+  font-size: 11px;
+}
+
+/* Interaction states for the next JavaScript step */
+
+#ominex.is-listening .ominex-orb-bars,
+#ominex.is-speaking .ominex-orb-bars {
+  animation-duration: 8s;
+}
+
+#ominex.is-listening #ominexMic {
+  border-color: var(--ox-accent);
+  background: #283b21;
+  color: var(--ox-accent);
+}
+
+#ominex.is-speaking .ominex-orb-core {
+  animation-duration: 1.2s;
+}
+
+#ominex .ominex-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes ominex-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ominex-breathe {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(0.97);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+/* Tablet */
+
+@media (max-width: 1150px) {
+  #ominex .ominex-app {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  #ominex .ominex-mood-panel {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 16px 25px;
+    margin: 0;
+    padding: 24px;
+    border: 0;
+    border-top: 1px solid var(--ox-border);
+    border-radius: 0;
+  }
+
+  #ominex .ominex-panel-heading {
+    grid-column: 1 / -1;
+  }
+
+  #ominex .ominex-mood-visual {
+    width: 125px;
+    margin: 0 auto;
+  }
+
+  #ominex .ominex-mood-caption {
+    text-align: left;
+  }
+
+  #ominex .ominex-panel-divider {
+    display: none;
+  }
+
+  #ominex .ominex-capabilities {
+    gap: 12px;
+  }
+
+  #ominex .ominex-voice-status {
+    grid-column: 2 / -1;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  #ominex {
+    width: calc(100% - 24px);
+    margin-top: 50px;
+  }
+
+  #ominex .ominex-app {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    border-radius: 20px;
+  }
+
+  #ominex .ominex-sidebar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px 12px;
+    padding: 20px 16px 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--ox-border);
+  }
+
+  #ominex .ominex-brand {
+    align-self: center;
+    margin: 0;
+    font-size: 22px;
+  }
+
+  #ominex .ominex-brand span {
+    max-width: 170px;
+    font-size: 7px;
+  }
+
+  #ominex .ominex-new-chat {
+    align-self: center;
+    width: auto;
+    min-height: 42px;
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  #ominex .ominex-navigation {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    margin: 0;
+  }
+
+  #ominex .ominex-nav-item {
+    min-height: 42px;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  #ominex .ominex-sidebar-bottom {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0;
+  }
+
+  #ominex .ominex-profile {
+    display: none;
+  }
+
+  #ominex .ominex-topbar {
+    padding: 18px;
+    font-size: 10px;
+  }
+
+  #ominex .ominex-welcome {
+    padding: 0 18px 20px;
+  }
+
+  #ominex .ominex-orb {
+    width: 170px;
+    height: 170px;
+    margin: 8px auto 18px;
+  }
+
+  #ominex .ominex-orb-ring {
+    inset: 23px;
+  }
+
+  #ominex .ominex-orb-core {
+    inset: 32px;
+  }
+
+  #ominex .ominex-welcome h3 {
+    font-size: 30px;
+  }
+
+  #ominex .ominex-intro {
+    font-size: 12px;
+  }
+
+  #ominex .ominex-suggestions {
+    gap: 6px;
+    margin-top: 18px;
+  }
+
+  #ominex .ominex-suggestions button {
+    min-height: 42px;
+    font-size: 10px;
+  }
+
+  #ominex .ominex-screen {
+    flex: 0 1 auto;
+    min-height: 120px;
+    max-height: 300px;
+    padding: 15px;
+    font-size: 12px;
+  }
+
+  #ominex .msg {
+    max-width: 94%;
+    padding: 12px 14px;
+  }
+
+  #ominex .ominex-composer-area {
+    padding: 12px 12px 18px;
+  }
+
+  #ominex .ominex-input {
+    gap: 5px;
+    padding: 6px;
+  }
+
+  #ominex .ominex-input input {
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  #ominex .ominex-input button {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+  }
+
+  #ominex .ominex-mood-panel {
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 18px;
+    padding: 22px 18px;
+  }
+
+  #ominex .ominex-mood-visual {
+    width: 100px;
+  }
+
+  #ominex .ominex-capabilities {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  #ominex .ominex-voice-status {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #ominex *,
+  #ominex *::before,
+  #ominex *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

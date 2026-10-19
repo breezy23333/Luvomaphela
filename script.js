@@ -810,108 +810,308 @@
     });
   }
 
-  /* OMINEX — LOCAL PORTFOLIO GUIDE */
+    /* OMINEX — PORTFOLIO GUIDE + WIKIPEDIA */
 
   function initOminex() {
-    const input = $("#ominexInput");
-    const send = $("#ominexSend");
-    const screen = $("#ominexScreen");
+    const root = document.querySelector("#ominex");
+    const input = document.querySelector("#ominexInput");
+    const send = document.querySelector("#ominexSend");
+    const screen = document.querySelector("#ominexScreen");
 
     if (!input || !send || !screen) return;
 
-    input.setAttribute("aria-label", "OMINEX command");
-    input.maxLength = 500;
+    const hint = document.querySelector("#ominexHint");
+    const newChat = document.querySelector("#ominexNewChat");
+    const help = document.querySelector("#ominexHelp");
+
+    let activeRequest = null;
+    let requestNumber = 0;
+
+    input.maxLength = 300;
+    input.placeholder = "Ask about a topic or explore my projects…";
+    input.setAttribute("aria-label", "Ask OMINEX");
     send.type = "button";
 
-    screen.setAttribute("role", "log");
-    screen.setAttribute("aria-live", "polite");
-    screen.setAttribute("aria-relevant", "additions");
+    const localAnswers = new Map([
+      [
+        "projects",
+        "Luvo’s featured projects are Cinryvan, an entertainment discovery platform, and Lexryspell, a word discovery and pronunciation tool."
+      ],
+      [
+        "showcase",
+        "Explore the Showcase section for games, interfaces, animation, video editing and interactive applications."
+      ],
+      [
+        "videos",
+        "Visit the Videos section to watch Luvo’s Movie thinkers videos."
+      ],
+      [
+        "skills",
+        "Luvo works with web development, game development, graphic design, UI design, video editing and 3D animation."
+      ],
+      [
+        "contact",
+        "Contact Luvo at luvomaphela0@gmail.com. You can also use the portfolio’s contact section."
+      ],
+      [
+        "help",
+        'Ask about a topic such as “Who is Nelson Mandela?” or “What is gravity?” I search Wikipedia and show article introductions with sources. Portfolio commands: projects, showcase, videos, skills, contact and clear.'
+      ],
+      [
+        "hello",
+        "Hello! Ask me about a topic, or type projects to explore Luvo’s work."
+      ],
+      [
+        "hi",
+        "Hi! What would you like to learn about?"
+      ],
+      [
+        "run it",
+        "Ready. Ask about a topic or explore Luvo’s portfolio."
+      ]
+    ]);
 
-    const heading = $(".ominex-header h3");
-
-    if (heading) {
-      heading.textContent = "OMINEX — Interactive Portfolio Guide";
+    function setHint(text) {
+      if (hint) hint.textContent = text;
     }
 
     function addMessage(text, type = "ai") {
-      screen.append(element("div", `msg ${type}`, text));
+      const message = document.createElement("div");
+      message.className = `msg ${type}`;
+      message.textContent = text;
+      screen.appendChild(message);
 
-      while (screen.childElementCount > 40) {
+      while (screen.children.length > 40) {
         screen.firstElementChild.remove();
       }
 
       screen.scrollTop = screen.scrollHeight;
+      return message;
     }
 
-    const responses = new Map([
-      [
-        "run it",
-        "OMINEX activated. Explore Luvo’s projects, games, animation and video work."
-      ],
-      [
-        "help",
-        "Commands: run it, projects, showcase, videos, skills, contact, clear."
-      ],
-      [
-        "projects",
-        "Featured Projects contains Cinryvan and Lexryspell. Use their project links to explore each platform."
-      ],
-      [
-        "websites",
-        "Cinryvan and Lexryspell are in Featured Projects."
-      ],
-      [
-        "showcase",
-        "Showcase contains BlockCraft, Cyber Runner, Fantasy RPG Interface, Space Combat VR, Game Awaits, OMINEX, Trade Bot, Motion Graphics, 99 Fashion, JavaScript Minis and other creative work. Use the category filters to browse."
-      ],
-      [
-        "videos",
-        "Visit the Movie thinkers section to watch the three linked YouTube videos."
-      ],
-      [
-        "skills",
-        "Luvo works across game development, web development, graphic and UI design, video editing and 3D animation."
-      ],
-      [
-        "contact",
-        "Email luvomaphela0@gmail.com or use the contact form to create an email draft."
-      ],
-      ["hello", 'Hello! Type "help" to see the available commands.'],
-      ["hi", 'Hi! Type "help" to explore the portfolio.']
-    ]);
+    function addLink(container, label, url) {
+      const link = document.createElement("a");
+      link.textContent = label;
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      container.appendChild(link);
+    }
 
-    screen.replaceChildren();
+    function resetChat() {
+      requestNumber += 1;
+      activeRequest?.abort();
+      activeRequest = null;
 
-    addMessage(
-      'Welcome to OMINEX, a local command demo. Try "projects", "showcase", "videos", "contact" or "help".'
-    );
+      send.disabled = false;
+      screen.removeAttribute("aria-busy");
+      screen.replaceChildren();
 
-    function run() {
-      const text = input.value.trim();
-      if (!text) return;
+      addMessage(
+        "Hello, I’m OMINEX. Ask about a topic and I’ll look it up on Wikipedia, or type projects to explore Luvo’s work."
+      );
+
+      setHint(
+        "Wikipedia topic summaries · Questions are sent to Wikipedia when searched."
+      );
 
       input.value = "";
+    }
 
-      const command = text
-        .toLowerCase()
-        .replace(/[.!?]+$/, "")
-        .trim();
+    async function wikiRequest(parameters, signal) {
+      const query = new URLSearchParams({
+        action: "query",
+        format: "json",
+        formatversion: "2",
+        origin: "*",
+        ...parameters
+      });
 
-      if (command === "clear") {
-        screen.replaceChildren();
-        addMessage('Screen cleared. Type "help" for commands.');
+      const response = await fetch(
+        `https://en.wikipedia.org/w/api.php?${query}`,
+        { signal }
+      );
+
+      if (!response.ok) {
+        throw new Error("Wikipedia request failed");
+      }
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error("Wikipedia API error");
+      }
+
+      return data;
+    }
+
+    function topicFromQuestion(text) {
+      return text
+        .replace(
+          /^(?:(?:please\s+)?(?:who|what)\s+(?:is|was|are|were)\s+|(?:please\s+)?(?:tell me about|search for|search wikipedia for|explain|define)\s+)/i,
+          ""
+        )
+        .replace(/[?!]+$/, "")
+        .trim() || text;
+    }
+
+    async function run(value = input.value) {
+      const text = String(value).trim().slice(0, 300);
+      if (!text) return;
+
+      const command = text.toLowerCase().replace(/[.!?]+$/, "");
+
+      if (command === "clear" || command === "new chat") {
+        resetChat();
         return;
       }
 
+      // Cancel an older lookup before starting a new one.
+      activeRequest?.abort();
+      const thisRequest = ++requestNumber;
+
+      screen.querySelectorAll("[data-wiki-pending]").forEach(node => {
+        node.textContent = "Previous lookup cancelled.";
+        node.removeAttribute("data-wiki-pending");
+      });
+
+      input.value = "";
       addMessage(text, "user");
 
-      addMessage(
-        responses.get(command) ||
-        'This is a local command demo. Type "help" to see the available commands.'
-      );
+      const local = localAnswers.get(command);
+
+      if (local) {
+        addMessage(local);
+        send.disabled = false;
+        screen.removeAttribute("aria-busy");
+        return;
+      }
+
+      const controller = new AbortController();
+      activeRequest = controller;
+      const timeout = setTimeout(() => controller.abort(), 12000);
+
+      send.disabled = true;
+      screen.setAttribute("aria-busy", "true");
+
+      const message = addMessage("Searching Wikipedia…");
+      message.dataset.wikiPending = "true";
+
+      try {
+        const topic = topicFromQuestion(text);
+
+        const results = await wikiRequest(
+          {
+            list: "search",
+            srsearch: topic,
+            srnamespace: "0",
+            srlimit: "3"
+          },
+          controller.signal
+        );
+
+        const matches = results.query?.search || [];
+
+        if (!matches.length) {
+          message.textContent =
+            "I couldn’t find a matching Wikipedia article. Try a specific person, place or topic.";
+          return;
+        }
+
+        const best = matches[0];
+
+        const articleData = await wikiRequest(
+          {
+            pageids: String(best.pageid),
+            prop: "extracts|pageprops",
+            exintro: "1",
+            explaintext: "1",
+            exchars: "1100"
+          },
+          controller.signal
+        );
+
+        if (thisRequest !== requestNumber) return;
+
+        const page = articleData.query?.pages?.[0];
+        const articleURL =
+          `https://en.wikipedia.org/?curid=${best.pageid}`;
+
+        const ambiguous =
+          page?.pageprops &&
+          Object.prototype.hasOwnProperty.call(
+            page.pageprops,
+            "disambiguation"
+          );
+
+        const summary = page?.extract?.trim();
+
+        message.textContent = ambiguous
+          ? `“${best.title}” can refer to several topics. Open the article or add more detail to your question.`
+          : summary
+            ? `Wikipedia match: ${best.title}\n\n${summary}`
+            : `I found “${best.title}”, but its introduction is unavailable. You can read the article below.`;
+
+        message.appendChild(document.createElement("br"));
+        message.appendChild(document.createElement("br"));
+
+        addLink(
+          message,
+          `Source: ${best.title} — Wikipedia`,
+          articleURL
+        );
+
+        const attribution = document.createElement("div");
+        attribution.style.marginTop = "10px";
+        attribution.style.fontSize = "11px";
+
+        attribution.append("Text: Wikipedia contributors · ");
+
+        addLink(
+          attribution,
+          "CC BY-SA 4.0",
+          "https://creativecommons.org/licenses/by-sa/4.0/"
+        );
+
+        message.appendChild(attribution);
+
+        if (matches.length > 1) {
+          const alternatives = document.createElement("div");
+          alternatives.style.marginTop = "12px";
+          alternatives.append("Other matches: ");
+
+          matches.slice(1).forEach((match, index) => {
+            if (index > 0) alternatives.append(" · ");
+
+            addLink(
+              alternatives,
+              match.title,
+              `https://en.wikipedia.org/?curid=${match.pageid}`
+            );
+          });
+
+          message.appendChild(alternatives);
+        }
+      } catch (error) {
+        if (thisRequest !== requestNumber) return;
+
+        message.textContent = error.name === "AbortError"
+          ? "The Wikipedia lookup took too long. Please try again."
+          : "I couldn’t reach Wikipedia right now. Please try again shortly.";
+      } finally {
+        clearTimeout(timeout);
+        message.removeAttribute("data-wiki-pending");
+
+        if (thisRequest === requestNumber) {
+          activeRequest = null;
+          send.disabled = false;
+          screen.removeAttribute("aria-busy");
+          screen.scrollTop = screen.scrollHeight;
+        }
+      }
     }
 
-    send.addEventListener("click", run);
+    send.addEventListener("click", () => run());
 
     input.addEventListener("keydown", event => {
       if (event.key === "Enter" && !event.isComposing) {
@@ -919,6 +1119,29 @@
         run();
       }
     });
+
+    newChat?.addEventListener("click", () => {
+      resetChat();
+      input.focus();
+    });
+
+    help?.addEventListener("click", () => run("help"));
+
+    root?.querySelectorAll("[data-ominex-prompt]").forEach(button => {
+      button.addEventListener("click", () => {
+        run(button.dataset.ominexPrompt);
+      });
+    });
+
+    // Voice is not connected in this Wikipedia-only step.
+    ["ominexMic", "ominexVoiceMode"].forEach(id => {
+      const button = document.getElementById(id);
+      if (!button) return;
+      button.disabled = true;
+      button.title = "Voice controls are not connected yet.";
+    });
+
+    resetChat();
   }
 
   /* SCROLL REVEALS */

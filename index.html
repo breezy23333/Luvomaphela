@@ -183,29 +183,229 @@
     </section>
 
     <!-- OMINEX INTERACTIVE GUIDE -->
-    <section class="demo-section">
-      <div class="ominex-demo">
-        <div class="ominex-header">
-          <span class="ai-dot"></span>
-          <h3>OMINEX — Interactive Portfolio Guide</h3>
-        </div>
+    <section id="ominex" class="demo-section">
+      <div class="ominex-app">
 
-        <div class="ominex-screen" id="ominexScreen">
-          <div class="msg ai">
-            Hello. I am OMINEX.
-            Type <b>Run it</b> to activate.
+        <!-- LEFT SIDEBAR -->
+        <aside class="ominex-sidebar">
+          <a href="#ominex" class="ominex-brand">
+            OMINEX
+            <span>INTERACTIVE PORTFOLIO GUIDE</span>
+          </a>
+
+          <button
+            id="ominexNewChat"
+            class="ominex-new-chat"
+            type="button"
+          >
+            <span aria-hidden="true">＋</span>
+            New chat
+          </button>
+
+          <nav class="ominex-navigation" aria-label="OMINEX navigation">
+            <a href="#ominexScreen" class="ominex-nav-item active">
+              <span aria-hidden="true">◉</span>
+              Conversation
+            </a>
+
+            <button
+              id="ominexVoiceMode"
+              class="ominex-nav-item"
+              type="button"
+              aria-pressed="false"
+            >
+              <span aria-hidden="true">≋</span>
+              Voice mode
+            </button>
+
+            <a href="#projects" class="ominex-nav-item">
+              <span aria-hidden="true">▦</span>
+              Explore projects
+            </a>
+
+            <a href="#showcase" class="ominex-nav-item">
+              <span aria-hidden="true">◇</span>
+              Creative showcase
+            </a>
+          </nav>
+
+          <div class="ominex-sidebar-bottom">
+            <button
+              id="ominexHelp"
+              class="ominex-nav-item"
+              type="button"
+            >
+              <span aria-hidden="true">?</span>
+              Help &amp; commands
+            </button>
+
+            <div class="ominex-profile">
+              <span class="ominex-profile-avatar">LM</span>
+              <div>
+                <strong>Luvo Maphela</strong>
+                <span>Creative portfolio</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- MAIN CHAT -->
+        <div class="ominex-main">
+          <header class="ominex-topbar">
+            <span>Portfolio assistant</span>
+            <span class="ominex-status">
+              <i aria-hidden="true"></i>
+              Ready
+            </span>
+          </header>
+
+          <div class="ominex-welcome">
+            <div class="ominex-orb" aria-hidden="true">
+              <div class="ominex-orb-bars"></div>
+              <div class="ominex-orb-ring"></div>
+              <div class="ominex-orb-core"></div>
+            </div>
+
+            <p class="ominex-eyebrow">MEET OMINEX</p>
+            <h3>How can I help?</h3>
+            <p class="ominex-intro">
+              Explore my projects, discover my creative work,
+              or find a way to get in touch.
+            </p>
+
+            <div class="ominex-suggestions">
+              <button type="button" data-ominex-prompt="projects">
+                Explore projects ↗
+              </button>
+              <button type="button" data-ominex-prompt="showcase">
+                Show creative work ↗
+              </button>
+              <button type="button" data-ominex-prompt="contact">
+                Contact Luvo ↗
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="ominex-screen"
+            id="ominexScreen"
+            role="log"
+            aria-label="Conversation with OMINEX"
+            aria-live="polite"
+            aria-relevant="additions text"
+          >
+            <div class="msg ai">
+              Hello, I’m OMINEX. What would you like to explore?
+            </div>
+          </div>
+
+          <div class="ominex-composer-area">
+            <div class="ominex-input">
+              <label class="ominex-sr-only" for="ominexInput">
+                Message OMINEX
+              </label>
+
+              <input
+                id="ominexInput"
+                type="text"
+                placeholder="Message OMINEX…"
+                autocomplete="off"
+              >
+
+              <button
+                id="ominexMic"
+                class="ominex-mic"
+                type="button"
+                aria-label="Start voice input"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  aria-hidden="true"
+                >
+                  <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+                  <path d="M5 10v2a7 7 0 0 0 14 0v-2"></path>
+                  <path d="M12 19v3M8 22h8"></path>
+                </svg>
+              </button>
+
+              <button
+                id="ominexSend"
+                type="button"
+                aria-label="Send message"
+              >
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m5 3 16 9-16 9 3-9-3-9Z"></path>
+                  <path d="M8 12h13"></path>
+                </svg>
+              </button>
+            </div>
+
+            <p id="ominexHint" class="ominex-composer-note">
+              Portfolio guide · Try projects, showcase, videos or contact.
+            </p>
           </div>
         </div>
 
-        <div class="ominex-input">
-          <input
-            id="ominexInput"
-            type="text"
-            placeholder="Talk to OMINEX…"
-            aria-label="Message OMINEX"
-          >
-          <button id="ominexSend" type="button">Run it</button>
-        </div>
+        <!-- RIGHT PANEL -->
+        <aside class="ominex-mood-panel">
+          <div class="ominex-panel-heading">
+            <h4>Atmosphere</h4>
+            <span>Calm</span>
+          </div>
+
+          <div class="ominex-mood-visual" aria-hidden="true">
+            <div class="ominex-wave ominex-wave-back"></div>
+            <div class="ominex-wave ominex-wave-front"></div>
+          </div>
+
+          <div class="ominex-mood-caption">
+            <strong>A little space to explore.</strong>
+            <p>Design, development and creative ideas in one place.</p>
+          </div>
+
+          <div class="ominex-panel-divider"></div>
+
+          <div class="ominex-capabilities">
+            <div>
+              <span>Projects</span>
+              <strong>Cinryvan &amp; Lexryspell</strong>
+            </div>
+            <div>
+              <span>Creative work</span>
+              <strong>Games, animation &amp; video</strong>
+            </div>
+            <div>
+              <span>Let’s collaborate</span>
+              <a href="#contact">Get in touch ↗</a>
+            </div>
+          </div>
+
+          <div class="ominex-panel-divider"></div>
+
+          <div class="ominex-voice-status">
+            <span class="ominex-voice-symbol" aria-hidden="true">≋</span>
+            <div>
+              <strong>Voice</strong>
+              <span id="ominexVoiceStatus">Off</span>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </section>
 
