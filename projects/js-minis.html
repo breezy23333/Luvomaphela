@@ -3,35 +3,476 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JavaScript Minis — APIs &amp; Widgets</title>
-  <link rel="stylesheet" href="../projects.css">
+
+  <title>JavaScript Minis | Luvo Maphela</title>
+  <meta
+    name="description"
+    content="Four useful mini apps: weather, currency conversion, space launches, and jokes. Created by Luvo Maphela."
+  >
+  <meta name="theme-color" content="#0b0e13">
+
+  <link rel="stylesheet" href="./js-minis.css">
+  <script src="./js-minis.js" defer></script>
 </head>
+
 <body>
-  <main class="project">
-    <header class="hero">
-      <img src="../img/js-hero.svg" alt="JavaScript Minis — APIs &amp; Widgets hero" style="width:100%;height:auto;display:block;">
-      <h1>JavaScript Minis — APIs &amp; Widgets</h1>
-      <p class="meta">Frontend Dev • 2025</p>
-      <p class="summary">Small web apps: Weather app, Joke generator, SpaceX launch tracker, Currency converter.</p>
-      <div class="tags"><span class="tag">JavaScript</span><span class="tag">APIs</span><span class="tag">Web</span></div>
-      <div class="actions">
-        <a class="btn" href="#" target="_blank">Live Demo</a> <a class="btn ghost" href="#" target="_blank">GitHub</a> 
+  <a class="skip-link" href="#apps">Skip to apps</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="Luvo Maphela home">
+        <span class="brand-mark">LM</span>
+        <span class="brand-name">Luvo Maphela</span>
+      </a>
+
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#apps">Explore apps</a>
+        <a href="#about">About</a>
+        <a class="back-link" href="../index.html">
+          <span aria-hidden="true">↗</span> Portfolio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow">
+          <span class="accent-dot" aria-hidden="true"></span>
+          THE MINI APP COLLECTION
+        </p>
+
+        <h1 id="page-title">
+          Small apps.<br>
+          <span>Everyday possibilities.</span>
+        </h1>
+
+        <p class="hero-description">
+          Check the weather. Convert a currency. Follow the next launch.
+          Find something to smile about. Four little tools, one place.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#apps">
+            Explore the minis <span aria-hidden="true">↘</span>
+          </a>
+
+          <span class="hero-note">No sign-up needed.</span>
+        </div>
+
+        <ul class="tech-tags" aria-label="Project technologies">
+          <li>JavaScript</li>
+          <li>Public APIs</li>
+          <li>HTML &amp; CSS</li>
+        </ul>
       </div>
-    </header>
 
-    <section class="gallery">
-      <img src="../img/js-1.svg" alt="JavaScript Minis — APIs &amp; Widgets media" style="max-width:100%;height:auto;">
-      <img src="../img/js-2.svg" alt="JavaScript Minis — APIs &amp; Widgets media" style="max-width:100%;height:auto;">
+      <div class="hero-art">
+        <img
+          src="../img/js-thumb.png"
+          alt="Preview of the JavaScript Minis collection"
+          width="1200"
+          height="800"
+          fetchpriority="high"
+        >
+        <div class="hero-art-caption">
+          <span>JAVASCRIPT MINIS</span>
+          <span>01 — 04</span>
+        </div>
+      </div>
     </section>
 
-    <section class="details">
-      <h2>Project Details</h2>
-      <p>Replace this section with your process: goals, challenges, tech stack, iterations, and final outcomes. Add screenshots, code snippets, or GIFs.</p>
+    <section class="apps-section" id="apps" aria-labelledby="apps-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PICK YOUR TOOL</p>
+          <h2 id="apps-title">A little more useful.</h2>
+        </div>
+        <p>Choose a mini and give it a try.</p>
+      </div>
+
+      <noscript>
+        <p class="notice">
+          Enable JavaScript in your browser to use these tools.
+        </p>
+      </noscript>
+
+      <div class="apps-grid">
+
+        <!-- WEATHER -->
+        <article class="app-card weather-card" aria-labelledby="weather-title">
+          <header class="card-header">
+            <div class="card-title-group">
+              <span class="app-icon" aria-hidden="true">☀</span>
+              <div>
+                <p class="card-kicker">01 / YOUR FORECAST</p>
+                <h3 id="weather-title">Weather</h3>
+              </div>
+            </div>
+            <span class="card-badge">Weather</span>
+          </header>
+
+          <p class="card-description">
+            A quick look at the skies, wherever you are.
+          </p>
+
+          <form class="search-form" id="weather-form">
+            <label class="field-label" for="weather-city">City name</label>
+            <div class="input-action">
+              <input
+                id="weather-city"
+                name="city"
+                type="search"
+                placeholder="e.g. Cape Town"
+                value="Cape Town"
+                maxlength="100"
+                required
+              >
+              <button class="button button-primary" type="submit">
+                Search
+              </button>
+            </div>
+          </form>
+
+          <p class="app-status" id="weather-status" role="status">
+            Search for a city to see its current weather.
+          </p>
+
+          <div class="weather-result" id="weather-result" hidden>
+            <div class="weather-location">
+              <div>
+                <h4 id="weather-location">—</h4>
+                <p id="weather-updated">—</p>
+              </div>
+              <span class="weather-symbol" id="weather-symbol" aria-hidden="true">
+                ☀
+              </span>
+            </div>
+
+            <div class="weather-main">
+              <p class="weather-temperature">
+                <span id="weather-temperature">—</span><span>°C</span>
+              </p>
+              <p id="weather-description">—</p>
+            </div>
+
+            <dl class="weather-stats">
+              <div>
+                <dt>Feels like</dt>
+                <dd id="weather-feels">—</dd>
+              </div>
+              <div>
+                <dt>Humidity</dt>
+                <dd id="weather-humidity">—</dd>
+              </div>
+              <div>
+                <dt>Wind</dt>
+                <dd id="weather-wind">—</dd>
+              </div>
+            </dl>
+          </div>
+
+          <footer class="card-footer">
+            <span>Plan your day, one forecast at a time.</span>
+          </footer>
+        </article>
+
+        <!-- CURRENCY -->
+        <article class="app-card currency-card" aria-labelledby="currency-title">
+          <header class="card-header">
+            <div class="card-title-group">
+              <span class="app-icon" aria-hidden="true">⇄</span>
+              <div>
+                <p class="card-kicker">02 / ACROSS BORDERS</p>
+                <h3 id="currency-title">Currency converter</h3>
+              </div>
+            </div>
+            <span class="card-badge">Money</span>
+          </header>
+
+          <p class="card-description">
+            From dollars to rands and beyond.
+          </p>
+
+          <form id="currency-form" class="currency-form">
+            <div class="field">
+              <label class="field-label" for="currency-amount">Amount</label>
+              <input
+                id="currency-amount"
+                name="amount"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="1000000000000"
+                step="any"
+                value="100"
+                required
+              >
+            </div>
+
+            <div class="currency-selectors">
+              <div class="field">
+                <label class="field-label" for="currency-from">From</label>
+                <select id="currency-from" name="from">
+                  <option value="USD" selected>USD — US Dollar</option>
+                  <option value="ZAR">ZAR — South African Rand</option>
+                  <option value="EUR">EUR — Euro</option>
+                  <option value="GBP">GBP — British Pound</option>
+                  <option value="JPY">JPY — Japanese Yen</option>
+                  <option value="AUD">AUD — Australian Dollar</option>
+                  <option value="CAD">CAD — Canadian Dollar</option>
+                  <option value="CHF">CHF — Swiss Franc</option>
+                  <option value="INR">INR — Indian Rupee</option>
+                </select>
+              </div>
+
+              <button
+                class="swap-button"
+                id="currency-swap"
+                type="button"
+                aria-label="Swap source and destination currencies"
+              >
+                ⇄
+              </button>
+
+              <div class="field">
+                <label class="field-label" for="currency-to">To</label>
+                <select id="currency-to" name="to">
+                  <option value="USD">USD — US Dollar</option>
+                  <option value="ZAR" selected>ZAR — South African Rand</option>
+                  <option value="EUR">EUR — Euro</option>
+                  <option value="GBP">GBP — British Pound</option>
+                  <option value="JPY">JPY — Japanese Yen</option>
+                  <option value="AUD">AUD — Australian Dollar</option>
+                  <option value="CAD">CAD — Canadian Dollar</option>
+                  <option value="CHF">CHF — Swiss Franc</option>
+                  <option value="INR">INR — Indian Rupee</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="button button-primary button-full" type="submit">
+              Convert currency <span aria-hidden="true">↗</span>
+            </button>
+          </form>
+
+          <p class="app-status" id="currency-status" role="status">
+            Enter an amount and choose your currencies.
+          </p>
+
+          <div class="currency-result" id="currency-result" hidden>
+            <p id="currency-original">—</p>
+            <p class="converted-amount" id="currency-converted">—</p>
+            <p class="exchange-rate" id="currency-rate">—</p>
+            <p class="rate-date" id="currency-date">—</p>
+          </div>
+
+          <footer class="card-footer">
+            <span>Reference rates. Your bank’s rate and fees may differ.</span>
+          </footer>
+        </article>
+
+        <!-- LAUNCH TRACKER -->
+        <article class="app-card launch-card" aria-labelledby="launch-title">
+          <header class="card-header">
+            <div class="card-title-group">
+              <span class="app-icon" aria-hidden="true">↗</span>
+              <div>
+                <p class="card-kicker">03 / BEYOND EARTH</p>
+                <h3 id="launch-title">Launch tracker</h3>
+              </div>
+            </div>
+            <span class="card-badge">Space</span>
+          </header>
+
+          <p class="card-description">
+            Explore upcoming SpaceX missions and their scheduled liftoffs.
+          </p>
+
+          <div class="launch-toolbar">
+            <span class="subtle-label">Upcoming missions</span>
+            <button
+              class="button button-secondary"
+              id="launch-refresh"
+              type="button"
+            >
+              Refresh <span aria-hidden="true">↻</span>
+            </button>
+          </div>
+
+          <p class="app-status" id="launch-status" role="status">
+            Load upcoming launches to explore the next mission.
+          </p>
+
+          <div class="launch-result" id="launch-result" hidden>
+            <div class="launch-image-wrap" id="launch-image-wrap" hidden>
+              <img id="launch-image" alt="" loading="lazy">
+            </div>
+
+            <div class="launch-details">
+              <span class="mission-status" id="launch-mission-status">—</span>
+              <h4 id="launch-name">—</h4>
+              <p id="launch-description"></p>
+
+              <dl class="launch-facts">
+                <div>
+                  <dt>Rocket</dt>
+                  <dd id="launch-rocket">—</dd>
+                </div>
+                <div>
+                  <dt>Launch site</dt>
+                  <dd id="launch-pad">—</dd>
+                </div>
+                <div>
+                  <dt>Scheduled launch</dt>
+                  <dd id="launch-date">—</dd>
+                </div>
+              </dl>
+
+              <div class="countdown" aria-label="Time until scheduled launch">
+                <div>
+                  <span id="launch-days">--</span>
+                  <span>Days</span>
+                </div>
+                <div>
+                  <span id="launch-hours">--</span>
+                  <span>Hours</span>
+                </div>
+                <div>
+                  <span id="launch-minutes">--</span>
+                  <span>Minutes</span>
+                </div>
+                <div>
+                  <span id="launch-seconds">--</span>
+                  <span>Seconds</span>
+                </div>
+              </div>
+
+              <a
+                class="text-link"
+                id="launch-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                hidden
+              >
+                Mission details <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <footer class="card-footer">
+            <span>Launch schedules can change.</span>
+          </footer>
+        </article>
+
+        <!-- JOKE GENERATOR -->
+        <article class="app-card joke-card" aria-labelledby="joke-title">
+          <header class="card-header">
+            <div class="card-title-group">
+              <span class="app-icon" aria-hidden="true">☺</span>
+              <div>
+                <p class="card-kicker">04 / TAKE A BREAK</p>
+                <h3 id="joke-title">One more joke</h3>
+              </div>
+            </div>
+            <span class="card-badge">Just for fun</span>
+          </header>
+
+          <p class="card-description">
+            A small break from the serious stuff.
+          </p>
+
+          <div class="joke-display">
+            <span class="quote-mark" aria-hidden="true">“</span>
+
+            <div class="joke-content" id="joke-content" aria-live="polite">
+              <p class="joke-setup" id="joke-setup">
+                Your next laugh is one click away.
+              </p>
+              <p class="joke-punchline" id="joke-punchline" hidden></p>
+            </div>
+
+            <span class="joke-category" id="joke-category">
+              Ready when you are
+            </span>
+          </div>
+
+          <div class="joke-actions">
+            <button
+              class="button button-primary"
+              id="joke-new"
+              type="button"
+            >
+              Tell me a joke <span aria-hidden="true">↗</span>
+            </button>
+
+            <button
+              class="button button-secondary"
+              id="joke-reveal"
+              type="button"
+              hidden
+            >
+              Reveal punchline
+            </button>
+
+            <button
+              class="button button-secondary"
+              id="joke-copy"
+              type="button"
+              disabled
+            >
+              Copy joke
+            </button>
+          </div>
+
+          <p class="app-status" id="joke-status" role="status"></p>
+
+          <footer class="card-footer">
+            <span>Good jokes. Questionable puns.</span>
+          </footer>
+        </article>
+
+      </div>
     </section>
 
-    <footer>
-      <p><a href="../index.html">← Back to Home</a></p>
-    </footer>
+    <section class="about-section" id="about" aria-labelledby="about-title">
+      <div>
+        <p class="eyebrow">BEHIND THE MINIS</p>
+        <h2 id="about-title">Small ideas.<br>Practical development.</h2>
+      </div>
+
+      <div class="about-copy">
+        <p>
+          JavaScript Minis brings four everyday tools into a single
+          dashboard. It explores working with public APIs, handling user
+          input, and turning data into clear, useful interfaces.
+        </p>
+        <p>
+          Designed and developed by Luvo Maphela using HTML, CSS,
+          and JavaScript.
+        </p>
+
+        <a class="text-link" href="../index.html">
+          Explore my portfolio <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">LM</span>
+        <span>JavaScript Minis</span>
+      </a>
+
+      <p>Built by Luvo Maphela.</p>
+
+      <a href="#page-title">
+        Back to top <span aria-hidden="true">↑</span>
+      </a>
+    </div>
+  </footer>
 </body>
 </html>
