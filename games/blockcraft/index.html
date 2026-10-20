@@ -1,33 +1,327 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BlockCraft — Minecraft Demo</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>BlockCraft | Luvo Maphela</title>
+
+  <meta
+    name="description"
+    content="Explore, build, and reshape a block world in BlockCraft, a browser game by Luvo Maphela."
+  >
+
+  <meta name="theme-color" content="#101912">
+
+  <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
+  <!-- The game canvas will be added here by main.js. -->
+  <main id="game-container" aria-label="BlockCraft game world"></main>
 
-  <div class="hud">
-    <h1>BlockCraft</h1>
-    <p>Click to lock mouse • WASD move • Space jump • Left place • Right remove</p>
+  <!-- START SCREEN -->
+  <section
+    class="screen start-screen"
+    id="start-screen"
+    aria-labelledby="start-title"
+  >
+    <div class="menu-panel">
+      <a class="portfolio-link" href="../../index.html">
+        ← Back to portfolio
+      </a>
+
+      <p class="eyebrow">A BROWSER BLOCK-BUILDING GAME</p>
+
+      <h1 id="start-title">BLOCK<span>CRAFT</span></h1>
+
+      <p class="menu-description">
+        A little world. Endless ideas.
+        Explore the landscape, place blocks, and build something of your own.
+      </p>
+
+      <button class="button button-primary" id="play-button" type="button">
+        Enter world
+      </button>
+
+      <p class="loading-status" id="loading-status" role="status">
+        Preparing the world…
+      </p>
+
+      <div class="controls-guide">
+        <h2>Your first steps</h2>
+
+        <dl>
+          <div>
+            <dt><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></dt>
+            <dd>Move</dd>
+          </div>
+
+          <div>
+            <dt>Mouse</dt>
+            <dd>Look around</dd>
+          </div>
+
+          <div>
+            <dt><kbd>Space</kbd></dt>
+            <dd>Jump</dd>
+          </div>
+
+          <div>
+            <dt>Left click</dt>
+            <dd>Place a block</dd>
+          </div>
+
+          <div>
+            <dt>Right click</dt>
+            <dd>Remove a block</dd>
+          </div>
+
+          <div>
+            <dt><kbd>1</kbd>–<kbd>5</kbd></dt>
+            <dd>Select a block</dd>
+          </div>
+
+          <div>
+            <dt><kbd>Esc</kbd></dt>
+            <dd>Pause / release mouse</dd>
+          </div>
+        </dl>
+      </div>
+
+      <p class="device-note">
+        Best played with a keyboard and mouse.
+      </p>
+
+      <p class="creator-credit">Created by Luvo Maphela</p>
+    </div>
+  </section>
+
+  <!-- IN-GAME HUD -->
+  <div class="hud" id="game-hud" hidden>
+    <div class="hud-brand">
+      <span class="hud-logo" aria-hidden="true">▣</span>
+
+      <div>
+        <h2>BLOCKCRAFT</h2>
+        <p>Explore. Build. Create.</p>
+      </div>
+    </div>
+
+    <div class="hud-actions">
+      <button
+        class="hud-button"
+        id="help-button"
+        type="button"
+        aria-controls="controls-panel"
+        aria-expanded="false"
+      >
+        Controls
+      </button>
+
+      <button
+        class="hud-button"
+        id="pause-button"
+        type="button"
+        aria-controls="pause-screen"
+      >
+        Pause
+      </button>
+    </div>
   </div>
 
-  <div class="crosshair"></div>
+  <!-- OPTIONAL CONTROLS PANEL -->
+  <aside
+    class="controls-panel"
+    id="controls-panel"
+    aria-labelledby="controls-title"
+    hidden
+  >
+    <h2 id="controls-title">Controls</h2>
 
-  <div class="hotbar" id="hotbar">
-    <button class="slot selected" data-block="grass" title="1 Grass">1</button>
-    <button class="slot" data-block="stone" title="2 Stone">2</button>
-    <button class="slot" data-block="dirt"  title="3 Dirt">3</button>
-    <button class="slot" data-block="water" title="4 Water">4</button>
-    <button class="slot" data-block="wood"  title="5 Wood">5</button>
+    <p><kbd>W A S D</kbd> Move</p>
+    <p><kbd>Space</kbd> Jump</p>
+    <p><kbd>1–5</kbd> Select block</p>
+    <p>Left click — Place</p>
+    <p>Right click — Remove</p>
+    <p><kbd>Esc</kbd> Pause</p>
+
+    <button class="hud-button" id="close-help-button" type="button">
+      Close controls
+    </button>
+  </aside>
+
+  <!-- AIM -->
+  <div
+    class="crosshair"
+    id="crosshair"
+    aria-hidden="true"
+    hidden
+  ></div>
+
+  <!-- SELECTED BLOCK -->
+  <div class="block-label" id="block-label" hidden>
+    <span class="block-label-caption">SELECTED BLOCK</span>
+    <span id="selected-block-name">Grass</span>
   </div>
 
-  <!-- Three.js -->
+  <!-- BLOCK INVENTORY -->
+  <nav
+    class="hotbar"
+    id="hotbar"
+    aria-label="Choose a building block"
+    hidden
+  >
+    <button
+      class="slot selected"
+      data-block="grass"
+      type="button"
+      title="1 — Grass"
+      aria-label="Grass, shortcut 1"
+      aria-pressed="true"
+    >
+      <span class="slot-key" aria-hidden="true">1</span>
+      <span class="block-preview block-grass" aria-hidden="true"></span>
+      <span class="slot-name">Grass</span>
+    </button>
+
+    <button
+      class="slot"
+      data-block="stone"
+      type="button"
+      title="2 — Stone"
+      aria-label="Stone, shortcut 2"
+      aria-pressed="false"
+    >
+      <span class="slot-key" aria-hidden="true">2</span>
+      <span class="block-preview block-stone" aria-hidden="true"></span>
+      <span class="slot-name">Stone</span>
+    </button>
+
+    <button
+      class="slot"
+      data-block="dirt"
+      type="button"
+      title="3 — Dirt"
+      aria-label="Dirt, shortcut 3"
+      aria-pressed="false"
+    >
+      <span class="slot-key" aria-hidden="true">3</span>
+      <span class="block-preview block-dirt" aria-hidden="true"></span>
+      <span class="slot-name">Dirt</span>
+    </button>
+
+    <button
+      class="slot"
+      data-block="water"
+      type="button"
+      title="4 — Water"
+      aria-label="Water, shortcut 4"
+      aria-pressed="false"
+    >
+      <span class="slot-key" aria-hidden="true">4</span>
+      <span class="block-preview block-water" aria-hidden="true"></span>
+      <span class="slot-name">Water</span>
+    </button>
+
+    <button
+      class="slot"
+      data-block="wood"
+      type="button"
+      title="5 — Wood"
+      aria-label="Wood, shortcut 5"
+      aria-pressed="false"
+    >
+      <span class="slot-key" aria-hidden="true">5</span>
+      <span class="block-preview block-wood" aria-hidden="true"></span>
+      <span class="slot-name">Wood</span>
+    </button>
+  </nav>
+
+  <!-- SHORT GAME MESSAGES -->
+  <p
+    class="game-message"
+    id="game-message"
+    role="status"
+    aria-live="polite"
+  ></p>
+
+  <!-- PAUSE MENU -->
+  <section
+    class="screen pause-screen"
+    id="pause-screen"
+    aria-labelledby="pause-title"
+    hidden
+  >
+    <div class="menu-panel pause-panel">
+      <p class="eyebrow">TAKE A BREATHER</p>
+
+      <h2 id="pause-title">World paused.</h2>
+
+      <p class="menu-description">
+        Ready to keep building?
+      </p>
+
+      <div class="menu-buttons">
+        <button
+          class="button button-primary"
+          id="resume-button"
+          type="button"
+        >
+          Resume game
+        </button>
+
+        <button
+          class="button button-secondary"
+          id="respawn-button"
+          type="button"
+        >
+          Return to spawn
+        </button>
+
+        <a class="button button-secondary" href="../../index.html">
+          Back to portfolio
+        </a>
+      </div>
+
+      <p class="device-note">
+        Resuming captures your mouse. Press Esc to release it.
+      </p>
+    </div>
+  </section>
+
+  <!-- ERROR MESSAGE -->
+  <section
+    class="screen error-screen"
+    id="error-screen"
+    aria-labelledby="error-title"
+    hidden
+  >
+    <div class="menu-panel">
+      <h2 id="error-title">The world couldn’t load.</h2>
+
+      <p id="error-message">
+        Check your connection and reload the page.
+      </p>
+
+      <a class="button button-secondary" href="./index.html">
+        Reload game
+      </a>
+
+      <a class="portfolio-link" href="../../index.html">
+        Back to portfolio
+      </a>
+    </div>
+  </section>
+
+  <noscript>
+    <p class="noscript-message">
+      BlockCraft needs JavaScript enabled to run.
+    </p>
+  </noscript>
+
+  <!-- Keep the existing Three.js version while updating the game. -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-
-
-  <script src="main.js"></script>
+  <script src="./main.js"></script>
 </body>
 </html>
-
